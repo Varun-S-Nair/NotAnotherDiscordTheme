@@ -1,0 +1,17 @@
+{
+    "settings": {
+        "showAllowedRoles": true,
+        "showAllowedUsers": true,
+        "showCategory": true,
+        "showDeniedRoles": true,
+        "showDeniedUsers": true,
+        "showForNormal": true,
+        "showOverWrittenRoles": true,
+        "showText": true,
+        "showTopic": true,
+        "showVoice": true
+    },
+    "categorystatus": {
+        "339112757494415362": true
+    }
+}

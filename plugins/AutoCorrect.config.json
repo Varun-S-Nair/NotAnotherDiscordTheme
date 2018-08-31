@@ -1,0 +1,50 @@
+{
+    "settings": {
+        "attachEverywhere": false,
+        "autoCapitalization": true,
+        "autoCorrect": false,
+        "autoPunctuation": true,
+        "autoPunctuationMin": 0,
+        "displayUpdateNotes": true,
+        "dontCorrectTwice": true,
+        "ignoreEmptyStart": true,
+        "ignoredPrefixes": ". ! ? % ~> /",
+        "learnedWords": [],
+        "overrideReplacers": [
+            {
+                "replacement": "Discord",
+                "word": "discord"
+            },
+            {
+                "replacement": "can't",
+                "word": "cant"
+            },
+            {
+                "replacement": "you're",
+                "word": "youre"
+            },
+            {
+                "replacement": "I don't know",
+                "word": "idk"
+            },
+            {
+                "replacement": "by the way",
+                "word": "btw"
+            },
+            {
+                "replacement": "he's",
+                "word": "hes"
+            },
+            {
+                "replacement": "they're",
+                "word": "theyre"
+            },
+            {
+                "replacement": "won't",
+                "word": "wont"
+            }
+        ],
+        "preventDoubleSpaces": false,
+        "useDevilsChecker": false
+    }
+}
