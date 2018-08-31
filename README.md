@@ -32,5 +32,5 @@ Have you made something cool with NotAnotherDiscordTheme and feel like sharing i
 * This theme is **NOT** minimal mode compatible.
 
 ## Acknowledgements
-* Thanks to [puckzxz#2080](https://github.com/puckzxz/) for his theme which i used to see how to make a theme 
-* Thanks to DinosParkour for his background image (find it as 'nova')
+* Thanks to DinosParkour for the Sakura theme which i used to learn how discord themes worked
+* Thanks to DevilBro for the background 
