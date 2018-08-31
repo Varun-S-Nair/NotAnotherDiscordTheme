@@ -33,3 +33,4 @@ Have you made something cool with NotAnotherDiscordTheme and feel like sharing i
 
 ## Acknowledgements
 * Thanks to [puckzxz#2080](https://github.com/puckzxz/) for his theme which i used to see how to make a theme 
+* Thanks to DinosParkour for his background image (find it as 'nova')
