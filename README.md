@@ -1,5 +1,6 @@
 # NotAnotherDiscordTheme
-NotAnotherDiscordTheme is a highly customizable theme for Discord (with [BetterDiscord](https://github.com/rauenzi/BetterDiscordApp/releases/latest)) allowing for a revitalized and fresh take on the Discord UI. Every part of the theme is customizable, from the background image to the scroll bar colors. The user has full control over the default configuration. Preview pictures can be found [here.](https://github.com/rshah2020/)
+NotAnotherDiscordTheme started out as a highly customizable theme for Discord (with [BetterDiscord](https://github.com/rauenzi/BetterDiscordApp/releases/latest)) allowing for a revitalized and fresh take on the Discord UI. Every part of the theme is customizable, from the background image to the scroll bar colors. The user has full control over the default configuration. 
+However, it is now basically just my BetterDiscord config - (I may have themes/plugins in here that do not belong to me but that I just use)
 
 ## Installation
 1. Ensure [Bandaged BetterDiscord](https://github.com/rauenzi/BetterDiscordApp/releases/latest) is installed.
@@ -34,3 +35,4 @@ Have you made something cool with NotAnotherDiscordTheme and feel like sharing i
 ## Acknowledgements
 * Thanks to DinosParkour for the Sakura theme which i used to learn how discord themes worked
 * Thanks to DevilBro for the background 
+* Anyone else that I forgot to mention
