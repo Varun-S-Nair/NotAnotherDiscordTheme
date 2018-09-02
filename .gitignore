@@ -1,2 +1,6 @@
+# SCSS stuff
 .sass-cache/
 *.css.map
+
+# Mac Stuff
+.DS_Store
