@@ -2,14 +2,16 @@
     "settings": {
         "attachEverywhere": false,
         "autoCapitalization": true,
-        "autoCorrect": false,
+        "autoCorrect": true,
         "autoPunctuation": true,
-        "autoPunctuationMin": 0,
+        "autoPunctuationMin": "0",
         "displayUpdateNotes": true,
         "dontCorrectTwice": true,
         "ignoreEmptyStart": true,
-        "ignoredPrefixes": ". ! ? % ~> /",
-        "learnedWords": [],
+        "ignoredPrefixes": ". ! ? % ~> / t!",
+        "learnedWords": [
+            "oof"
+        ],
         "overrideReplacers": [
             {
                 "replacement": "Discord",
@@ -42,9 +44,81 @@
             {
                 "replacement": "won't",
                 "word": "wont"
+            },
+            {
+                "replacement": "I know",
+                "word": "ik"
+            },
+            {
+                "replacement": "you",
+                "word": "u"
+            },
+            {
+                "replacement": "know",
+                "word": "kno"
+            },
+            {
+                "replacement": "Dude, I don't think you know what I'm saying...",
+                "word": "udk"
+            },
+            {
+                "replacement": "Can't talk now; ttyl",
+                "word": "gtg"
+            },
+            {
+                "replacement": "I know right",
+                "word": "ikr"
+            },
+            {
+                "replacement": ":joy:",
+                "word": "xd"
+            },
+            {
+                "replacement": "about",
+                "word": "abt"
+            },
+            {
+                "replacement": "I'm",
+                "word": "im"
+            },
+            {
+                "replacement": "right now",
+                "word": "rn"
+            },
+            {
+                "replacement": "iOS",
+                "word": "ios"
+            },
+            {
+                "replacement": "python",
+                "word": "py"
+            },
+            {
+                "replacement": "JavaScript",
+                "word": "js"
+            },
+            {
+                "replacement": "good night",
+                "word": "gn"
+            },
+            {
+                "replacement": "really",
+                "word": "rlly"
+            },
+            {
+                "replacement": "sorry",
+                "word": "srry"
+            },
+            {
+                "replacement": "IntelliJ",
+                "word": "intellij"
+            },
+            {
+                "replacement": "because",
+                "word": "bc"
             }
         ],
-        "preventDoubleSpaces": false,
+        "preventDoubleSpaces": true,
         "useDevilsChecker": false
     }
 }
