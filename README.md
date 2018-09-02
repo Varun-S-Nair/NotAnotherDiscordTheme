@@ -5,7 +5,7 @@ However, it is now basically just my BetterDiscord config - (I may have themes/p
 ## Installation
 1. Ensure [Bandaged BetterDiscord](https://github.com/rauenzi/BetterDiscordApp/releases/latest) is installed.
 2. Open the following theme in a new browser tab:
-      * [Theme](https://raw.githubusercontent.com/rshah2020/NotAnotherDiscordTheme/master/NotAnotherDiscordTheme.theme.css)
+      * [Theme](https://github.com/rshah2020/NotAnotherDiscordTheme/blob/master/themes/NotAnotherDiscordTheme.theme.css)
 
 3. In the new tab, Right click > "Save As..." > save to the BetterDiscord Theme folder. (If you cannot find your theme folder, save it to Desktop and then move it later)
 4. Restart the Discord client either by right clicking the tray icon and clicking "Quit Discord" or by pressing Ctrl+R (CMD+R for Mac) inside the client.
