@@ -1,10 +1,10 @@
 {
     "settings": {
         "24h": false,
-        "citeFull": true,
+        "citeFull": false,
         "embeds": true,
         "mention": false,
         "noEmbedsServers": "",
-        "utc": false
+        "utc": true
     }
 }

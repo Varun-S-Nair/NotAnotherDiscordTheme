@@ -7,9 +7,12 @@
         "cutSeconds": false,
         "displayDate": true,
         "displayTime": true,
-        "forceZeros": false,
+        "forceZeros": true,
         "otherOrder": false,
         "showInChat": true,
         "showOnHover": false
+    },
+    "formats": {
+        "ownFormat": "$hour:$minute:$second, $day.$monthnameL.$year"
     }
 }

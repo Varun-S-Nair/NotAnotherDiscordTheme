@@ -1,3 +1,6 @@
 {
-    "settings": null
+    "settings": {
+        "ignoreNoLanguage": false,
+        "noStyle": false
+    }
 }
