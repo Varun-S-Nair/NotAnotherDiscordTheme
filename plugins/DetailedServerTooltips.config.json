@@ -2,7 +2,7 @@
     "settings": {
         "displayDelay": "500",
         "displayUpdateNotes": true,
-        "minimalMode": false,
+        "minimalMode": true,
         "tooltipColor": "#43B5BD"
     }
 }

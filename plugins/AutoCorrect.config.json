@@ -8,8 +8,24 @@
         "displayUpdateNotes": true,
         "dontCorrectTwice": true,
         "ignoreEmptyStart": true,
-        "ignoredPrefixes": "@ . ! ? % ~> / t! & ` ```",
+        "ignoredPrefixes": "?queue @ . ! ? % ~> / t! & ` ``` ;;play",
         "learnedWords": [
+            "ginders",
+            "abt",
+            "varun",
+            "polizzi",
+            "varun",
+            "fml",
+            "devpost",
+            "pasha",
+            "varun",
+            "deepansha",
+            "royster",
+            "savas",
+            "sanjit",
+            "polizzi",
+            "lepold",
+            "akshit",
             "ginder",
             "tbh",
             "af",
@@ -359,6 +375,78 @@
             {
                 "replacement": "FRC",
                 "word": "frc"
+            },
+            {
+                "replacement": "statistics",
+                "word": "stats"
+            },
+            {
+                "replacement": "development",
+                "word": "dev"
+            },
+            {
+                "replacement": "don't worry",
+                "word": "dw"
+            },
+            {
+                "replacement": "autonomous",
+                "word": "auton"
+            },
+            {
+                "replacement": "teleoperated",
+                "word": "teleop"
+            },
+            {
+                "replacement": "isn't",
+                "word": "isnt"
+            },
+            {
+                "replacement": "Music Theory",
+                "word": "MT"
+            },
+            {
+                "replacement": "computer programming",
+                "word": "comp prog"
+            },
+            {
+                "replacement": "vice president",
+                "word": "vp"
+            },
+            {
+                "replacement": "no problem",
+                "word": "np"
+            },
+            {
+                "replacement": "about?",
+                "word": "abt?"
+            },
+            {
+                "replacement": "about.",
+                "word": "abt."
+            },
+            {
+                "replacement": "character",
+                "word": "char"
+            },
+            {
+                "replacement": "characters",
+                "word": "chars"
+            },
+            {
+                "replacement": "idk",
+                "word": " idk"
+            },
+            {
+                "replacement": "profile picture",
+                "word": "pfp"
+            },
+            {
+                "replacement": "picture",
+                "word": "pic"
+            },
+            {
+                "replacement": "pictures",
+                "word": "pics"
             }
         ],
         "preventDoubleSpaces": true,
