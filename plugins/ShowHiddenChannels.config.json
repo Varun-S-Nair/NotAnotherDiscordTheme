@@ -1,21 +1,22 @@
 {
-    "settings": {
-        "showAllowedRoles": true,
-        "showAllowedUsers": true,
-        "showCategory": true,
-        "showDeniedRoles": true,
-        "showDeniedUsers": true,
-        "showForNormal": true,
-        "showOverWrittenRoles": true,
-        "showText": true,
-        "showTopic": true,
-        "showVoice": true
-    },
-    "categorystatus": {
-        "181970867549503489": true,
-        "339112757494415362": true,
-        "430424577877868551": true,
-        "467094234994835469": true,
-        "487654964869464074": false
-    }
+	"settings": {
+		"showAllowedRoles": true,
+		"showAllowedUsers": true,
+		"showCategory": true,
+		"showDeniedRoles": true,
+		"showDeniedUsers": true,
+		"showForNormal": true,
+		"showOverWrittenRoles": true,
+		"showText": true,
+		"showTopic": true,
+		"showVoice": true
+	},
+	"categorystatus": {
+		"181970867549503489": true,
+		"339112757494415362": true,
+		"430424577877868551": true,
+		"467094234994835469": true,
+		"487654964869464074": false,
+		"441053566296391690": true
+	}
 }

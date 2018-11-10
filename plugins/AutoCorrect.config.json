@@ -1,116 +1,44 @@
 {
     "settings": {
-        "attachEverywhere": false,
-        "autoCapitalization": true,
-        "autoCorrect": true,
-        "autoPunctuation": true,
-        "autoPunctuationMin": "0",
         "displayUpdateNotes": true,
         "dontCorrectTwice": true,
+        "autoCapitalization": true,
+        "autoPunctuation": true,
+        "autoCorrect": true,
         "ignoreEmptyStart": true,
-        "ignoredPrefixes": "?queue @ . ! ? % ~> / t! & ` ``` ;;play",
-        "learnedWords": [
-            "siddharth",
-            "glooks",
-            "ngl",
-            "wtaf",
-            "ttyl",
-            "oof",
-            "oof.",
-            "oof",
-            "chromebook",
-            "ginders",
-            "hella",
-            "abt",
-            "varun",
-            "daksh",
-            "ruchir",
-            "polizzi",
-            "af",
-            "nalin",
-            "pranay",
-            "varun",
-            "lmao",
-            "lmaooo",
-            "fml",
-            "devpost",
-            "pasha",
-            "varun",
-            "deepansha",
-            "royster",
-            "savas",
-            "sanjit",
-            "polizzi",
-            "lepold",
-            "akshit",
-            "ginder",
-            "tbh",
-            "af",
-            "brack",
-            "ya",
-            "nalin",
-            "galazin",
-            "brienza",
-            "ofc",
-            "tttyl",
-            "dw",
-            "ayy",
-            "ayyy",
-            "hackkean",
-            "noice",
-            "yeet",
-            "yee",
-            "fuk",
-            "fucc",
-            "l's",
-            "betto",
-            "kms",
-            "kys",
-            "kk",
-            "ohhh",
-            "mayaank",
-            "ishaan",
-            "pennapps",
-            "ronit",
-            "krishnan",
-            "classreveal",
-            "samvit",
-            "southhacks",
-            "anitej",
-            "bs"
-        ],
+        "ignoredPrefixes": "?queue @ . ! ? % ~> / t! & ` ``` ;;play = =help ",
         "overrideReplacers": [
             {
-                "replacement": "Discord",
-                "word": "discord"
+                "word": "discord",
+                "replacement": "Discord"
             },
             {
-                "replacement": "can't",
-                "word": "cant"
+                "word": "cant",
+                "replacement": "can't"
             },
             {
-                "replacement": "you're",
-                "word": "youre"
+                "word": "youre",
+                "replacement": "you're"
             },
             {
-                "replacement": "I don't know",
-                "word": "idk"
+                "word": "idk",
+                "replacement": "I don't know"
             },
             {
-                "replacement": "by the way",
-                "word": "btw"
+                "word": "btw",
+                "replacement": "by the way"
             },
             {
-                "replacement": "he's",
-                "word": "hes"
+                "word": "hes",
+                "replacement": "he's"
             },
             {
-                "replacement": "they're",
-                "word": "theyre"
+                "word": "theyre",
+                "replacement": "they're"
             },
             {
-                "replacement": "won't",
-                "word": "wont"
+                "word": "wont",
+                "replacement": "won't"
             },
             {
                 "replacement": "I know",
@@ -479,9 +407,117 @@
             {
                 "replacement": "Oof.",
                 "word": "Oof."
+            },
+            {
+                "replacement": "theorem",
+                "word": "thm"
+            },
+            {
+                "replacement": "theorem",
+                "word": "thm."
+            },
+            {
+                "replacement": "so much",
+                "word": "sm"
+            },
+            {
+                "replacement": "program",
+                "word": "prgm"
+            },
+            {
+                "replacement": "programming",
+                "word": "prgm'ing"
+            },
+            {
+                "replacement": "react native",
+                "word": "r-n"
+            },
+            {
+                "replacement": "react-native",
+                "word": "R-n"
+            },
+            {
+                "word": "teh",
+                "replacement": "the"
             }
         ],
+        "useDevilsChecker": false,
+        "learnedWords": [
+            "siddharth",
+            "glooks",
+            "ngl",
+            "wtaf",
+            "ttyl",
+            "oof",
+            "chromebook",
+            "ginders",
+            "hella",
+            "abt",
+            "daksh",
+            "ruchir",
+            "nalin",
+            "pranay",
+            "lmao",
+            "lmaooo",
+            "fml",
+            "devpost",
+            "pasha",
+            "deepansha",
+            "royster",
+            "savas",
+            "sanjit",
+            "polizzi",
+            "lepold",
+            "akshit",
+            "ginder",
+            "brack",
+            "ya",
+            "nalin",
+            "galazin",
+            "brienza",
+            "ofc",
+            "tttyl",
+            "dw",
+            "ayy",
+            "ayyy",
+            "hackkean",
+            "noice",
+            "yeet",
+            "yee",
+            "fuk",
+            "fucc",
+            "l's",
+            "betto",
+            "kms",
+            "kys",
+            "kk",
+            "ohhh",
+            "mayaank",
+            "ishaan",
+            "pennapps",
+            "ronit",
+            "krishnan",
+            "classreveal",
+            "samvit",
+            "southhacks",
+            "anitej",
+            "bs",
+            "shreya",
+            "patil",
+            "dwivedi",
+            "varun",
+            "jinal",
+            "tbh",
+            "flaskcards",
+            "heroku",
+            "brightserve",
+            "nawrin",
+            "xd",
+            "easthacks",
+            "socialeyes"
+        ],
+        "attachEverywhere": false,
         "preventDoubleSpaces": true,
-        "useDevilsChecker": false
+        "autoPunctuationMin": "0"
     }
 }

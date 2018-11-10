@@ -1,10 +1,4 @@
 {
-    "settings": {
-        "plugin": {
-            "contextMenus": true,
-            "popouts": true
-        }
-    },
     "currentVersionInfo": {
         "version": "0.1.3",
         "hasShownChangelog": true
