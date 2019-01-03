@@ -1,0 +1,11 @@
+{
+	"settings": {
+		"addInUserPopout": true,
+		"addInUserProfil": true,
+		"addJoinedAtTime": true,
+		"forceZeros": false
+	},
+	"choices": {
+		"joinedAtDateLang": "$discord"
+	}
+}

@@ -2,9 +2,24 @@
 
 class CharCounter {
 	initConstructor () {
+		this.moduleTypes = {
+			"ChannelTextArea":"componentDidMount",
+			"Note":"componentDidMount",
+			"Modal":"componentDidMount"
+		};
+		
 		this.selecting = false;
 		
-		this.counterMarkup = `<div id="charcounter"></div>`;
+		this.counterMarkup = `<div id="charcounter" class="charcounter"></div>`;
+		
+		this.maxLenghts = {
+			normal: 2000,
+			edit: 2000,
+			form: 2000,
+			nickname: 32,
+			popout: 256,
+			profile: 256
+		}
 		   
 		this.css = `
 			${BDFDB.dotCN.themelight} #charcounter {
@@ -18,6 +33,9 @@ class CharCounter {
 			${BDFDB.dotCNS.typing + BDFDB.dotCN.cooldownwrapper} {
 				margin-right: 64px;
 			}
+			.charcounter-added {
+				position: relative !important;
+			}
 			#charcounter {
 				display: block;
 				position: absolute;
@@ -25,7 +43,7 @@ class CharCounter {
 				pointer-events: none;
 			}
 			#charcounter.normal {
-				right: 0; 
+				right: 0;
 				bottom: -1.3em;
 			}
 			#charcounter.edit {
@@ -33,8 +51,25 @@ class CharCounter {
 				bottom: -1.3em;
 			}
 			#charcounter.form {
-				right: 0; 
+				right: 0;
 				bottom: -1.0em;
+			}
+			#charcounter.nickname {
+				right: 0 !important;
+				top: 0 !important;
+			}
+			#charcounter.popout {
+				right: 3px !important;
+				bottom: 1px !important;
+				font-size: 10px !important;
+			}
+			#charcounter.profile {
+				right: -5px !important;
+				bottom: 3px !important;
+				font-size: 12px !important;
+			}
+			${BDFDB.dotCN.usernote} textarea:not(:focus) + #charcounter {
+				display: none;
 			}`;
 	}
 
@@ -42,7 +77,7 @@ class CharCounter {
 
 	getDescription () {return "Adds a charcounter in the chat.";}
 
-	getVersion () {return "1.2.6";}
+	getVersion () {return "1.3.0";}
 
 	getAuthor () {return "DevilBro";}
 
@@ -68,25 +103,13 @@ class CharCounter {
 	initialize () {
 		if (typeof BDFDB === "object") {
 			BDFDB.loadMessage(this);
-						
-			var observer = null;
-
-			observer = new MutationObserver((changes, _) => {
-				changes.forEach(
-					(change, i) => {
-						if (change.addedNodes) {
-							change.addedNodes.forEach((node) => {
-								if (node && node.tagName && node.querySelector(BDFDB.dotCN.textareainner + ":not(" + BDFDB.dotCN.textareainnerdisabled + ")")) {
-									this.appendCounter(node.querySelector("textarea"));
-								}
-							});
-						}
-					}
-				);
-			});
-			BDFDB.addObserver(this, BDFDB.dotCN.appmount, {name:"textareaObserver",instance:observer}, {childList: true, subtree: true});
 			
-			document.querySelectorAll("textarea").forEach(textarea => {this.appendCounter(textarea);});
+			for (let type in this.moduleTypes) {
+				let module = BDFDB.WebModules.findByName(type);
+				if (module && module.prototype) BDFDB.WebModules.patch(module.prototype, this.moduleTypes[type], this, {after: (e) => {this.initiateProcess(e.thisObject, type);}});
+			}
+			
+			this.forceAllUpdates();
 		}
 		else {
 			console.error(this.getName() + ": Fatal Error: Could not load BD functions!");
@@ -96,58 +119,93 @@ class CharCounter {
 
 	stop () {
 		if (typeof BDFDB === "object") {
-			$("#charcounter").remove();
+			$(".charcounter").remove();
 			$(".charcounter-added").removeClass("charcounter-added");
 						
 			BDFDB.unloadMessage(this);
 		}
 	}
 	
+	
 	// begin of own functions
 	
-	appendCounter (textarea) {
-		if (!textarea) return;
-		var textareaWrap = textarea.parentElement;
-		if (textareaWrap && !textareaWrap.querySelector("#charcounter")) {
-			var textareaInstance = BDFDB.getOwnerInstance({"node":textarea, "props":["handlePaste","saveCurrentText"], "up":true});
-			if (textareaInstance && textareaInstance.props && textareaInstance.props.type) {
-				var counter = $(this.counterMarkup);
-				counter.addClass(textareaInstance.props.type).appendTo(textareaWrap);
-				
-				var updateCounter = () => {
-					var selection = textarea.selectionEnd - textarea.selectionStart == 0 ? "" : " (" + (textarea.selectionEnd - textarea.selectionStart) + ")";
-					counter.text(BDFDB.getParsedLength(textarea.value) + "/2000" + selection);
+	initiateProcess (instance, type) {
+		type = type.replace(/[^A-z]/g,"");
+		type = type[0].toUpperCase() + type.slice(1);
+		if (typeof this["process" + type] == "function") {
+			let wrapper = BDFDB.React.findDOMNodeSafe(instance);
+			if (wrapper) this["process" + type](instance, wrapper);
+			else setImmediate(() => {
+				this["process" + type](instance, BDFDB.React.findDOMNodeSafe(instance));
+			});
+		}
+	}
+	
+	processChannelTextArea (instance, wrapper) {
+		if (!wrapper) return;
+		if (instance.props && instance.props.type && this.maxLenghts[instance.props.type]) this.appendCounter(wrapper.querySelector("textarea"), instance.props.type);
+	}
+	
+	processNote (instance, wrapper) {
+		if (!wrapper) return;
+		if (wrapper.classList) this.appendCounter(wrapper.firstElementChild, wrapper.classList.contains(BDFDB.disCN.usernotepopout) ? "popout" : (wrapper.classList.contains(BDFDB.disCN.usernoteprofile) ? "profile" : null));
+	}
+	
+	processModal (instance, wrapper) {
+		if (!wrapper) return;
+		if (instance.props && instance.props.tag == "form") {
+			let reset = wrapper.querySelector(BDFDB.dotCN.reset);
+			if (reset && BDFDB.getInnerText(reset.firstElementChild) == BDFDB.LanguageStrings.RESET_NICKNAME) this.appendCounter(wrapper.querySelector(BDFDB.dotCN.inputdefault), "nickname");
+		}
+	}
+	
+	appendCounter (input, type) {
+		if (!input || !type) return;
+		var counter = $(this.counterMarkup);
+		counter.addClass(type).appendTo(input.parentElement);
+		
+		var updateCounter = () => {
+			var selection = input.selectionEnd - input.selectionStart == 0 ? "" : " (" + (input.selectionEnd - input.selectionStart) + ")";
+			var maxLength = this.maxLenghts[type] || 2000;
+			counter.text(input.value.length + "/" + maxLength + selection);
+		}
+		
+		input.parentElement.parentElement.classList.add("charcounter-added");
+		if (type == "nickname") input.setAttribute("maxlength", 32);
+		$(input)
+			.off("keydown." + this.getName() + " click." + this.getName())
+			.on("keydown." + this.getName() + " click." + this.getName(), e => {
+				clearTimeout(input.charcountertimeout);
+				input.charcountertimeout = setTimeout(() => {updateCounter();},100);
+			})
+			.off("mousedown." + this.getName())
+			.on("mousedown." + this.getName(), e => {
+				this.selecting = true;
+			});
+		$(document)
+			.off("mouseup." + this.getName())
+			.on("mouseup." + this.getName(), e => {
+				if (this.selecting) {
+					this.selecting = false;
 				}
-				
-				textareaWrap.parentElement.classList.add("charcounter-added");
-				$(textarea)
-					.off("keydown." + this.getName() + " click." + this.getName())
-					.on("keydown." + this.getName() + " click." + this.getName(), e => {
-						clearTimeout(textarea.charcountertimeout);
-						textarea.charcountertimeout = setTimeout(() => {updateCounter();},100);
-					})
-					.off("mousedown." + this.getName())
-					.on("mousedown." + this.getName(), e => {
-						this.selecting = true;
-					});
-				$(document)
-					.off("mouseup." + this.getName())
-					.on("mouseup." + this.getName(), e => {
-						if (this.selecting) {
-							this.selecting = false;
-						}
-					})
-					.off("mousemove." + this.getName())
-					.on("mousemove." + this.getName(), e => {
-						if (this.selecting) {
-							setTimeout(() => {
-								updateCounter();
-							},10);
-						}
-					});
-				
-				updateCounter();
-			}
+			})
+			.off("mousemove." + this.getName())
+			.on("mousemove." + this.getName(), e => {
+				if (this.selecting) {
+					setTimeout(() => {
+						updateCounter();
+					},10);
+				}
+			});
+		
+		updateCounter();
+	}
+	
+	forceAllUpdates () {
+		let app = document.querySelector(BDFDB.dotCN.app);
+		if (app) {
+			let ins = BDFDB.getOwnerInstance({node:app, name:Object.keys(this.moduleTypes), all:true, noCopies:true, group:true, depth:99999999, time:99999999});
+			for (let type in ins) for (let i in ins[type]) this.initiateProcess(ins[type][i], type);
 		}
 	}
 }

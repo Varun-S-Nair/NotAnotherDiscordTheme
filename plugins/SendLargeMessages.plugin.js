@@ -4,6 +4,10 @@ class SendLargeMessages {
 	initConstructor () {
 		this.labels = {};
 		
+		this.patchModules = {
+			"ChannelTextArea":"componentDidMount"
+		};
+		
 		this.messageDelay = 1000; //changing at own risk, might result in bans or mutes
 		
 		this.css = `
@@ -14,9 +18,7 @@ class SendLargeMessages {
 				resize: none;
 			}
 			.sendlargemessages-modal #warning-message {
-				font-weight: bold;
 				color: red;
-				opacity: 1;
 			}
 			
 			.sendlargemessages-modal #character-counter {
@@ -43,12 +45,12 @@ class SendLargeMessages {
 									</g>
 								</svg>
 							</div>
-							<div class="${BDFDB.disCNS.scrollerwrap + BDFDB.disCNS.modalcontent + BDFDB.disCNS.scrollerthemed + BDFDB.disCN.themeghosthairline} ${BDFDB.disCNS.inputwrapper + BDFDB.disCNS.vertical + BDFDB.disCNS.flex + BDFDB.disCNS.directioncolumn + BDFDB.disCNS.flexchild + BDFDB.disCN.modalsubinner}" style="flex: 1 1 auto;">
+							<div class="${BDFDB.disCNS.scrollerwrap + BDFDB.disCNS.modalcontent + BDFDB.disCNS.scrollerthemed + BDFDB.disCNS.themeghosthairline + BDFDB.disCNS.inputwrapper + BDFDB.disCNS.vertical + BDFDB.disCNS.flex + BDFDB.disCNS.directioncolumn + BDFDB.disCNS.flexchild + BDFDB.disCN.modalsubinner}" style="flex: 1 1 auto;">
 								<textarea class="${BDFDB.disCNS.scroller + BDFDB.disCNS.inputdefault + BDFDB.disCN.input}" id="modal-inputtext"></textarea>
 							</div>
 							<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.alignstart + BDFDB.disCNS.nowrap + BDFDB.disCNS.modalsubinner + BDFDB.disCN.marginbottom8}" style="flex: 0 0 auto;">
-								<h5 id="warning-message" class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.h5 + BDFDB.disCNS.title + BDFDB.disCNS.size12 + BDFDB.disCNS.height16 + BDFDB.disCNS.weightsemibold + BDFDB.disCNS.h5defaultmargin}" style="flex: 1 1 auto;"></h5>
-								<h5 id="character-counter" class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.h5 + BDFDB.disCNS.title + BDFDB.disCNS.size12 + BDFDB.disCNS.height16 + BDFDB.disCNS.weightsemibold + BDFDB.disCNS.h5defaultmargin}" style="flex: 0 0 auto;"></h5>
+								<h5 id="warning-message" class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.h5 + BDFDB.disCNS.size12 + BDFDB.disCNS.height16 + BDFDB.disCNS.weightbold + BDFDB.disCNS.h5defaultmargin}" style="flex: 1 1 auto;"></h5>
+								<h5 id="character-counter" class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.h5 + BDFDB.disCNS.size12 + BDFDB.disCNS.height16 + BDFDB.disCNS.weightmedium + BDFDB.disCNS.h5defaultmargin}" style="flex: 0 0 auto;"></h5>
 							</div>
 							<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontalreverse + BDFDB.disCNS.horizontalreverse2 + BDFDB.disCNS.directionrowreverse + BDFDB.disCNS.justifystart + BDFDB.disCNS.alignstretch + BDFDB.disCNS.nowrap + BDFDB.disCN.modalfooter}">
 								<button type="button" class="btn-send ${BDFDB.disCNS.button + BDFDB.disCNS.buttonlookfilled + BDFDB.disCNS.buttoncolorbrand + BDFDB.disCNS.buttonsizemedium + BDFDB.disCN.buttongrow}">
@@ -65,7 +67,7 @@ class SendLargeMessages {
 
 	getDescription () {return "Opens a popout when your message is too large, which allows you to automatically send the message in several smaller messages.";}
 
-	getVersion () {return "1.4.6";}
+	getVersion () {return "1.5.1";}
 
 	getAuthor () {return "DevilBro";}
 
@@ -90,8 +92,10 @@ class SendLargeMessages {
 	initialize () {
 		if (typeof BDFDB === "object") {
 			BDFDB.loadMessage(this);
-						
-			this.bindEventToTextArea();
+			
+			this.clipboard = require("electron").clipboard;
+			
+			BDFDB.WebModules.forceAllUpdates(this);
 		}
 		else {
 			console.error(this.getName() + ": Fatal Error: Could not load BD functions!");
@@ -104,12 +108,6 @@ class SendLargeMessages {
 			BDFDB.unloadMessage(this);
 		}
 	}
-	
-	onSwitch () {
-		if (typeof BDFDB === "object") {
-			this.bindEventToTextArea();
-		}
-	}
 
 	
 	// begin of own functions
@@ -120,37 +118,45 @@ class SendLargeMessages {
 		this.sendMessageModalMarkup = 		this.sendMessageModalMarkup.replace("REPLACE_btn_send_text", this.labels.btn_send_text);
 	}
 	
-	bindEventToTextArea () {
-		var checkTextarea = (textarea, text) => {
-			if (BDFDB.getParsedLength(text) > 1950) {
-				textarea.selectionStart = 0;
-				textarea.selectionEnd = textarea.value.length;
-				document.execCommand("insertText", false, "");
-				this.showSendModal(text);
+	processChannelTextArea (instance, wrapper) {
+		if (instance.props && instance.props.type && instance.props.type == "normal") {
+			let textarea = wrapper.querySelector("textarea");
+			if (textarea) {
+				let modaltext, checkTextarea = () => {
+					if (BDFDB.getParsedLength(textarea.value) > 1950) {
+						textarea.selectionStart = 0;
+						textarea.selectionEnd = textarea.value.length;
+						document.execCommand("insertText", false, "");
+						this.showSendModal(modaltext);
+					}
+				};
+				$(textarea)
+					.off("input." + this.getName())
+					.on("input." + this.getName(), e => {
+						clearTimeout(textarea.sendlargemessagestimeout);
+						textarea.sendlargemessagestimeout = setTimeout(() => {
+							modaltext = textarea.value;
+							checkTextarea();
+						},100);
+					})
+					.off("paste." + this.getName())
+					.on("paste." + this.getName(), e => {
+						modaltext = textarea.value.slice(0, textarea.selectionStart) + this.clipboard.readText() + textarea.value.slice(textarea.selectionEnd);
+						setImmediate(() => {checkTextarea(textarea);});
+					});
 			}
-		};
-		$(BDFDB.dotCNS.textareawrapchat + "textarea")
-			.off("input." + this.getName())
-			.on("input." + this.getName(), e => {
-				checkTextarea(e.currentTarget, e.currentTarget.value);
-			})
-			.off("paste." + this.getName())
-			.on("paste." + this.getName(), e => {
-				setImmediate(() => {
-					checkTextarea(e.currentTarget, e.currentTarget.value);
-				});
-			});
+		}
 	}
 	
 	showSendModal (text) {
-		var sendMessageModal = $(this.sendMessageModalMarkup);
-		var textinput = sendMessageModal.find("#modal-inputtext");
-		var warning = sendMessageModal.find("#warning-message");
-		var counter = sendMessageModal.find("#character-counter");
+		let sendMessageModal = $(this.sendMessageModalMarkup);
+		let textinput = sendMessageModal.find("#modal-inputtext");
+		let warning = sendMessageModal.find("#warning-message");
+		let counter = sendMessageModal.find("#character-counter");
 		
-		var updateCounter = () => {
-			var parsedlength = BDFDB.getParsedLength(textinput.val());
-			var messageAmount = Math.ceil(parsedlength/1900);
+		let updateCounter = () => {
+			let parsedlength = BDFDB.getParsedLength(textinput.val());
+			let messageAmount = Math.ceil(parsedlength/1900);
 			warning.text(messageAmount > 15 ? this.labels.modal_messages_warning : "");
 			counter.text(parsedlength + " (" + (textinput[0].selectionEnd - textinput[0].selectionStart) + ") => " + this.labels.modal_messages_translation + ": " + messageAmount);
 		};
@@ -159,11 +165,11 @@ class SendLargeMessages {
 		sendMessageModal
 			.on("click", ".btn-send", (e) => {
 				e.preventDefault();
-				var messages = this.formatText(textinput.val());
+				let messages = this.formatText(textinput.val());
 				messages.forEach((message,i) => {
 					setTimeout(() => {
 						this.sendMessage(message);
-						if (i == messages.length-1) BDFDB.showToast(this.labels.toast_allsent_text, {type:"success"});
+						if (i >= messages.length-1) BDFDB.showToast(this.labels.toast_allsent_text, {type:"success"});
 					},this.messageDelay * i);
 				});
 			});
@@ -198,8 +204,8 @@ class SendLargeMessages {
 	
 	formatText (text) {
 		text = text.replace(new RegExp("\t", 'g'), "	");
-		var longwords = text.match(/[\S]{1800,}/gm);
-		for (var i in longwords) {
+		let longwords = text.match(/[\S]{1800,}/gm);
+		for (let i in longwords) {
 			let longword = longwords[i];
 			let count1 = 0;
 			let shortwords = [];
@@ -209,15 +215,15 @@ class SendLargeMessages {
 			});
 			text = text.replace(longword, shortwords.join(" "));
 		}
-		var messages = [];
-		var count2 = 0;
+		let messages = [];
+		let count2 = 0;
 		text.split(" ").forEach((word) => {
 			if (messages[count2] && BDFDB.getParsedLength(messages[count2] + "" + word) > 1900) count2++;
 			messages[count2] = messages[count2] ? messages[count2] + " " + word : word;
 		});
 		
-		var insertCodeBlock = null, insertCodeLine = null;
-		for (var j = 0; j < messages.length; j++) {
+		let insertCodeBlock = null, insertCodeLine = null;
+		for (let j = 0; j < messages.length; j++) {
 			if (insertCodeBlock) {
 				messages[j] = insertCodeBlock + messages[j];
 				insertCodeBlock = null;
@@ -227,8 +233,8 @@ class SendLargeMessages {
 				insertCodeLine = null;
 			}
 			
-			var codeBlocks = messages[j].match(/`{3,}[\S]*\n|`{3,}/gm);
-			var codeLines = messages[j].match(/[^`]{0,1}`{1,2}[^`]|[^`]`{1,2}[^`]{0,1}/gm);
+			let codeBlocks = messages[j].match(/`{3,}[\S]*\n|`{3,}/gm);
+			let codeLines = messages[j].match(/[^`]{0,1}`{1,2}[^`]|[^`]`{1,2}[^`]{0,1}/gm);
 			
 			if (codeBlocks && codeBlocks.length % 2 == 1) {
 				messages[j] = messages[j] + "```";
@@ -244,10 +250,13 @@ class SendLargeMessages {
 	}
 	
 	sendMessage (text) {
-		var textarea = document.querySelector(BDFDB.dotCNS.textareawrapchat + "textarea");
+		let textarea = document.querySelector(BDFDB.dotCNS.textareawrapchat + "textarea");
 		if (textarea) {
-			BDFDB.getOwnerInstance({"node":textarea, "name":"ChannelTextAreaForm", "up":true}).setState({textValue:text});
-			BDFDB.triggerSend(textarea);
+			let instance = BDFDB.getOwnerInstance({"node":textarea.parentElement, "name":"ChannelTextAreaForm", "up":true});
+			if (instance) {
+				instance.setState({textValue:text});
+				BDFDB.triggerSend(textarea);
+			}
 		}
 	}
 	
