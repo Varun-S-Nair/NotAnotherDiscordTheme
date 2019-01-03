@@ -26,3 +26,7 @@
 html > head + body > div#app-mount.appMount-3VJmYg > div.app-19_DXt > div > div.layers-3iHuyZ.flex-vertical.flex-spacer > div.layer-3QrUeG + div.layer-3QrUeG > div.ui-standard-sidebar-view:before {
     content: url('data:image/svg+xml; utf8, <svg width="400" height="18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path stroke="none" fill="#FFF" fill-rule="evenodd" d=""></path></svg>') !important;
 }
+
+html > head + body > div#app-mount.appMount-3VJmYg > div.app-19_DXt > div > div.layers-3iHuyZ.flex-vertical.flex-spacer > div.layer-3QrUeG + div.layer-3QrUeG > div > div.standardSidebarView-3F1I7i:before {
+    content: url('data:image/svg+xml; utf8, <svg width="400" height="18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path stroke="none" fill="#FFF" fill-rule="evenodd" d=""></path></svg>') !important;
+}
