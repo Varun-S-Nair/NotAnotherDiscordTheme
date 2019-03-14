@@ -1,0 +1,523 @@
+{
+    "settings": {
+        "displayUpdateNotes": true,
+        "dontCorrectTwice": true,
+        "autoCapitalization": true,
+        "autoPunctuation": true,
+        "autoCorrect": true,
+        "ignoreEmptyStart": true,
+        "ignoredPrefixes": "?queue @ . ! ? % ~> / t! & ` ``` ;;play = =help ",
+        "overrideReplacers": [
+            {
+                "word": "discord",
+                "replacement": "Discord"
+            },
+            {
+                "word": "cant",
+                "replacement": "can't"
+            },
+            {
+                "word": "youre",
+                "replacement": "you're"
+            },
+            {
+                "word": "idk",
+                "replacement": "I don't know"
+            },
+            {
+                "word": "btw",
+                "replacement": "by the way"
+            },
+            {
+                "word": "hes",
+                "replacement": "he's"
+            },
+            {
+                "word": "theyre",
+                "replacement": "they're"
+            },
+            {
+                "word": "wont",
+                "replacement": "won't"
+            },
+            {
+                "replacement": "I know",
+                "word": "ik"
+            },
+            {
+                "replacement": "you",
+                "word": "u"
+            },
+            {
+                "replacement": "know",
+                "word": "kno"
+            },
+            {
+                "replacement": "Dude, I don't think you get what I'm saying...",
+                "word": "udk"
+            },
+            {
+                "replacement": "Can't talk now; ttyl",
+                "word": "gtg"
+            },
+            {
+                "replacement": "I know right",
+                "word": "ikr"
+            },
+            {
+                "replacement": ":joy:",
+                "word": "xd"
+            },
+            {
+                "replacement": "about",
+                "word": "abt"
+            },
+            {
+                "replacement": "I'm",
+                "word": "im"
+            },
+            {
+                "replacement": "right now",
+                "word": "rn"
+            },
+            {
+                "replacement": "iOS",
+                "word": "ios"
+            },
+            {
+                "replacement": "python",
+                "word": "py"
+            },
+            {
+                "replacement": "JavaScript",
+                "word": "js"
+            },
+            {
+                "replacement": "good night",
+                "word": "gn"
+            },
+            {
+                "replacement": "really",
+                "word": "rlly"
+            },
+            {
+                "replacement": "sorry",
+                "word": "srry"
+            },
+            {
+                "replacement": "IntelliJ IDEA Ultimate Edition",
+                "word": "intellij"
+            },
+            {
+                "replacement": "because",
+                "word": "bc"
+            },
+            {
+                "replacement": "repository",
+                "word": "repo"
+            },
+            {
+                "replacement": "I don't think so",
+                "word": "idts"
+            },
+            {
+                "replacement": "I don't think",
+                "word": "idt"
+            },
+            {
+                "replacement": "your",
+                "word": "ur"
+            },
+            {
+                "replacement": "she's",
+                "word": "shes"
+            },
+            {
+                "replacement": "people",
+                "word": "ppl"
+            },
+            {
+                "replacement": "AP",
+                "word": "ap"
+            },
+            {
+                "replacement": "It's",
+                "word": "Its"
+            },
+            {
+                "replacement": "though",
+                "word": "tho"
+            },
+            {
+                "replacement": "direct message",
+                "word": "dm"
+            },
+            {
+                "replacement": "APUSH",
+                "word": "apush"
+            },
+            {
+                "replacement": "what",
+                "word": "wut"
+            },
+            {
+                "replacement": "don't know",
+                "word": "dk"
+            },
+            {
+                "replacement": "are",
+                "word": "r"
+            },
+            {
+                "replacement": "I'll",
+                "word": "ill"
+            },
+            {
+                "replacement": "message",
+                "word": "msg"
+            },
+            {
+                "replacement": "messaged",
+                "word": "msg'd"
+            },
+            {
+                "replacement": "I guess",
+                "word": "ig"
+            },
+            {
+                "replacement": "really",
+                "word": "rlly"
+            },
+            {
+                "replacement": "through",
+                "word": "thru"
+            },
+            {
+                "replacement": "true",
+                "word": "tru"
+            },
+            {
+                "replacement": "tomorrow",
+                "word": "tmrw"
+            },
+            {
+                "replacement": "don't worry about it",
+                "word": "dwai"
+            },
+            {
+                "replacement": "where you at",
+                "word": "wya"
+            },
+            {
+                "replacement": "before",
+                "word": "b4"
+            },
+            {
+                "replacement": "going to",
+                "word": "gonna"
+            },
+            {
+                "replacement": "to be fair",
+                "word": "tbf"
+            },
+            {
+                "replacement": "wasn't",
+                "word": "wasnt"
+            },
+            {
+                "replacement": "High School North",
+                "word": "hsn"
+            },
+            {
+                "replacement": "High School South",
+                "word": "hss"
+            },
+            {
+                "replacement": "West Windsor-Plainsboro",
+                "word": "wwp"
+            },
+            {
+                "replacement": "if i recall correctly",
+                "word": "iirc"
+            },
+            {
+                "replacement": "in my opinion",
+                "word": "imo"
+            },
+            {
+                "replacement": "how is",
+                "word": "hows"
+            },
+            {
+                "replacement": "pretty",
+                "word": "p"
+            },
+            {
+                "replacement": "never mind",
+                "word": "nvm"
+            },
+            {
+                "replacement": "very",
+                "word": "v"
+            },
+            {
+                "replacement": "just",
+                "word": "jus"
+            },
+            {
+                "replacement": "that's",
+                "word": "thats"
+            },
+            {
+                "replacement": "capture the flag",
+                "word": "ctf"
+            },
+            {
+                "replacement": "as far as I know",
+                "word": "afaik"
+            },
+            {
+                "replacement": "Aditya Patil",
+                "word": "adi.pat"
+            },
+            {
+                "replacement": "honors",
+                "word": "hns"
+            },
+            {
+                "replacement": "Visual Studio Code",
+                "word": "vsc"
+            },
+            {
+                "replacement": "Where are you right now lol?",
+                "word": "wya?"
+            },
+            {
+                "replacement": "computer science",
+                "word": "cs"
+            },
+            {
+                "replacement": "LaTeX",
+                "word": "latex"
+            },
+            {
+                "replacement": "tomorrow?",
+                "word": "tmrw?"
+            },
+            {
+                "replacement": "education",
+                "word": "edu"
+            },
+            {
+                "replacement": "homework",
+                "word": "hw"
+            },
+            {
+                "replacement": "right now?",
+                "word": "rn?"
+            },
+            {
+                "replacement": "FRC",
+                "word": "frc"
+            },
+            {
+                "replacement": "statistics",
+                "word": "stats"
+            },
+            {
+                "replacement": "development",
+                "word": "dev"
+            },
+            {
+                "replacement": "don't worry",
+                "word": "dw"
+            },
+            {
+                "replacement": "autonomous",
+                "word": "auton"
+            },
+            {
+                "replacement": "teleoperated",
+                "word": "teleop"
+            },
+            {
+                "replacement": "isn't",
+                "word": "isnt"
+            },
+            {
+                "replacement": "Music Theory",
+                "word": "MT"
+            },
+            {
+                "replacement": "computer programming",
+                "word": "comp prog"
+            },
+            {
+                "replacement": "vice president",
+                "word": "vp"
+            },
+            {
+                "replacement": "no problem",
+                "word": "np"
+            },
+            {
+                "replacement": "about?",
+                "word": "abt?"
+            },
+            {
+                "replacement": "about.",
+                "word": "abt."
+            },
+            {
+                "replacement": "character",
+                "word": "char"
+            },
+            {
+                "replacement": "characters",
+                "word": "chars"
+            },
+            {
+                "replacement": "idk",
+                "word": " idk"
+            },
+            {
+                "replacement": "profile picture",
+                "word": "pfp"
+            },
+            {
+                "replacement": "picture",
+                "word": "pic"
+            },
+            {
+                "replacement": "pictures",
+                "word": "pics"
+            },
+            {
+                "replacement": "I don't even know",
+                "word": "idek"
+            },
+            {
+                "replacement": "Visual Studio Code",
+                "word": "VSC"
+            },
+            {
+                "replacement": "something",
+                "word": "smth"
+            },
+            {
+                "replacement": "Oof.",
+                "word": "Oof."
+            },
+            {
+                "replacement": "theorem",
+                "word": "thm"
+            },
+            {
+                "replacement": "theorem",
+                "word": "thm."
+            },
+            {
+                "replacement": "so much",
+                "word": "sm"
+            },
+            {
+                "replacement": "program",
+                "word": "prgm"
+            },
+            {
+                "replacement": "programming",
+                "word": "prgm'ing"
+            },
+            {
+                "replacement": "react native",
+                "word": "r-n"
+            },
+            {
+                "replacement": "react-native",
+                "word": "R-n"
+            },
+            {
+                "word": "teh",
+                "replacement": "the"
+            }
+        ],
+        "useDevilsChecker": false,
+        "learnedWords": [
+            "siddharth",
+            "glooks",
+            "ngl",
+            "wtaf",
+            "ttyl",
+            "oof",
+            "chromebook",
+            "ginders",
+            "hella",
+            "abt",
+            "daksh",
+            "ruchir",
+            "nalin",
+            "pranay",
+            "lmao",
+            "lmaooo",
+            "fml",
+            "devpost",
+            "pasha",
+            "deepansha",
+            "royster",
+            "savas",
+            "sanjit",
+            "polizzi",
+            "lepold",
+            "akshit",
+            "ginder",
+            "brack",
+            "ya",
+            "nalin",
+            "galazin",
+            "brienza",
+            "ofc",
+            "tttyl",
+            "dw",
+            "ayy",
+            "ayyy",
+            "hackkean",
+            "noice",
+            "yeet",
+            "yee",
+            "fuk",
+            "fucc",
+            "l's",
+            "betto",
+            "kms",
+            "kys",
+            "kk",
+            "ohhh",
+            "mayaank",
+            "ishaan",
+            "pennapps",
+            "ronit",
+            "krishnan",
+            "classreveal",
+            "samvit",
+            "southhacks",
+            "anitej",
+            "bs",
+            "shreya",
+            "patil",
+            "dwivedi",
+            "varun",
+            "jinal",
+            "tbh",
+            "flaskcards",
+            "heroku",
+            "brightserve",
+            "nawrin",
+            "xd",
+            "easthacks",
+            "socialeyes"
+        ],
+        "attachEverywhere": false,
+        "preventDoubleSpaces": true,
+        "autoPunctuationMin": "0"
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "settings": {
+        "plugin": {
+            "contextMenus": true,
+            "popouts": true
+        }
+    },
+    "currentVersionInfo": {
+        "version": "0.1.7",
+        "hasShownChangelog": true
+    },
+    "announcements": {
+        "localLibNotice": true
+    }
+}
