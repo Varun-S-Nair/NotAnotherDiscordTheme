@@ -3,10 +3,10 @@
         "displayUpdateNotes": true,
         "dontCorrectTwice": true,
         "autoCapitalization": true,
-        "autoPunctuation": true,
+        "autoPunctuation": false,
         "autoCorrect": true,
         "ignoreEmptyStart": true,
-        "ignoredPrefixes": "?queue @ . ! ? % ~> / t! & ` ``` ;;play = =help ",
+        "ignoredPrefixes": "?queue @ . ! ? % ~> / t! & ` ``` ;;play = =help p!",
         "overrideReplacers": [
             {
                 "word": "discord",
@@ -429,8 +429,8 @@
                 "word": "prgm'ing"
             },
             {
-                "replacement": "react native",
-                "word": "r-n"
+                "word": "r-n",
+                "replacement": "react native"
             },
             {
                 "replacement": "react-native",
@@ -439,6 +439,34 @@
             {
                 "word": "teh",
                 "replacement": "the"
+            },
+            {
+                "word": "pt",
+                "replacement": "pretty"
+            },
+            {
+                "word": "jt",
+                "replacement": "just"
+            },
+            {
+                "word": "dm'd",
+                "replacement": "direct messaged"
+            },
+            {
+                "word": "bd",
+                "replacement": "BetterDiscord"
+            },
+            {
+                "word": "prez",
+                "replacement": "president"
+            },
+            {
+                "word": "pres",
+                "replacement": "president"
+            },
+            {
+                "word": "sumant",
+                "replacement": "Sumant"
             }
         ],
         "useDevilsChecker": false,
@@ -466,7 +494,6 @@
             "royster",
             "savas",
             "sanjit",
-            "polizzi",
             "lepold",
             "akshit",
             "ginder",

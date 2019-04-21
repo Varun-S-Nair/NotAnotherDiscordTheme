@@ -1,0 +1,18 @@
+{
+	"translators": {
+		"useGoogle": true
+	},
+	"settings": {
+		"addTranslateButton": true,
+		"sendOriginalMessage": false
+	},
+	"choices": {
+		"inputContext": "auto",
+		"outputContext": "$discord",
+		"inputMessage": "auto",
+		"outputMessage": "$discord"
+	},
+	"changelog": {
+		"currentversion": "1.6.8"
+	}
+}

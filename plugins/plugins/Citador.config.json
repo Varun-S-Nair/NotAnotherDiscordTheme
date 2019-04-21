@@ -1,7 +1,7 @@
 {
     "settings": {
         "useFallbackCodeblock": 0,
-        "mentionUser": true,
+        "mentionUser": false,
         "disabledServers": [
             "290269241645596672",
             "415318283387142145"
