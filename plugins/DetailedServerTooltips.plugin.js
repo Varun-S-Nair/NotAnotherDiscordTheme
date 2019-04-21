@@ -4,7 +4,7 @@ class DetailedServerTooltips {
 
 	getName() { return "DetailedServerTooltips"; }
 	getDescription() { return "Displays a more detailed tooltip for servers similar to user popouts. Contains a larger image, owner's tag, date, time and days ago created, date, time and days ago joined, member count, channel count, role count, region, and whether or not the server is partnered."; }
-	getVersion() { return "0.3.4"; }
+	getVersion() { return "0.3.8"; }
 	getAuthor() { return "Metalloriff"; }
 	getChanges() {
 		return {
@@ -20,6 +20,15 @@ class DetailedServerTooltips {
 				Fixed update notes.
 				Fixed incompatibility with Zerebos' DoNotTrack plugin. (If you still have issues with tooltips sticking with it, please let me know. I barely tested it.)
 				Added a minimal mode setting.
+			`,
+			"0.3.5": `
+				Fixed tooltip getting stuck with ServerFolders
+			`,
+			"0.3.6": `
+				Fixed tooltips getting stuck when switching from dm to a server.
+			`,
+			"0.3.8": `
+				Fixed tooltips not showing for servers inside of folders with DevilBro's ServerFolders plugin.
 			`
 		};
 	}
@@ -27,18 +36,12 @@ class DetailedServerTooltips {
 	load() {}
 
 	start() {
-		let libLoadedEvent = () => {
-			try {
-				if(window.pluginCookie["DoNotTrack"] == true) setTimeout(() => this.onLibLoaded(), 10000);
+		const libLoadedEvent = () => {
+			try{
+				if(window.pluginCookie["DoNotTrack"] == true) setTimeout(() => this.onLibLoaded(), 2000);
 				else this.onLibLoaded();
-			} catch (err) {
-				console.error(this.getName(), "fatal error, plugin could not be started!", err);
-				try {
-					this.stop();
-				} catch (err) {
-					console.error(this.getName() + ".stop()", err);
-				}
 			}
+			catch(err) { console.error(this.getName(), "fatal error, plugin could not be started!", err); try { this.stop(); } catch(err) { console.error(this.getName() + ".stop()", err); } }
 		};
 
 		let lib = document.getElementById("NeatoBurritoLibrary");
@@ -46,53 +49,60 @@ class DetailedServerTooltips {
 			lib = document.createElement("script");
 			lib.id = "NeatoBurritoLibrary";
 			lib.type = "text/javascript";
-			lib.src = "https://cdn.jsdelivr.net/gh/Metalloriff/BetterDiscordPlugins@master/Lib/NeatoBurritoLibrary.js";
+			lib.src = "https://rawgit.com/Metalloriff/BetterDiscordPlugins/master/Lib/NeatoBurritoLibrary.js";
 			document.head.appendChild(lib);
 		}
+
 		this.forceLoadTimeout = setTimeout(libLoadedEvent, 30000);
 		if (typeof window.NeatoLib !== "undefined") libLoadedEvent();
 		else lib.addEventListener("load", libLoadedEvent);
 	}
 
+	get settingFields() {
+		return {
+			tooltipColor: { label: "Tooltip color", type: "color" },
+			displayDelay: { label: "Tooltip display delay", description: "(ms)", type: "int" },
+			preview: { type: "custom", html: `
+					<div class="tooltip tooltip-right dst-tooltip" style="position: relative; margin-top: 20px;">
+							Kappa Stretch Server
+							<div class="dst-tooltip-icon" style="background-image: url(https://cdn.discordapp.com/attachments/392905457486004224/457784406313271296/KappaStretch.png);"></div>
+							<div id="dst-tooltip-owner-label" class="dst-tooltip-label">Owner: KappaStretch#0000</div>
+							<div class="dst-tooltip-label">Joined at: ${new Date().toLocaleDateString()}, ${new Date().toLocaleTimeString()} (0 days ago)</div>
+							<div id="dst-tooltip-member-count-label" class="dst-tooltip-label">400 members</div>
+							<div class="dst-tooltip-label">15 channels</div>
+							<div class="dst-tooltip-label">10 roles</div>
+							<div class="dst-tooltip-label">Region: us-central</div>
+							<div style="font-weight: bolder;" class="dst-tooltip-label"><div class="profileBadgePartner-SjK6L2 profileBadge-2BqF-Z" style="display: inline-block;"></div>PARTNERED SERVER</div>
+					</div>
+			` },
+			minimalMode: { label: "Minimal mode", type: "bool" },
+			minimalPreview: { type: "custom", html: `
+					<div class="tooltip tooltip-right dst-tooltip dst-min" style="position: relative; margin-top: 20px;">
+							Kappa Stretch Server
+							<div class="dst-tooltip-icon" style="background-image: url(https://cdn.discordapp.com/attachments/392905457486004224/457784406313271296/KappaStretch.png);"></div>
+							<div id="dst-tooltip-owner-label" class="dst-tooltip-label">Owner: KappaStretch#0000</div>
+							<div class="dst-tooltip-label">Joined at: ${new Date().toLocaleDateString()}, ${new Date().toLocaleTimeString()} (0 days ago)</div>
+							<div id="dst-tooltip-member-count-label" class="dst-tooltip-label">400 members</div>
+							<div class="dst-tooltip-label">15 channels</div>
+							<div class="dst-tooltip-label">10 roles</div>
+							<div class="dst-tooltip-label">Region: us-central</div>
+							<div style="font-weight: bolder;" class="dst-tooltip-label"><div class="profileBadgePartner-SjK6L2 profileBadge-2BqF-Z" style="display: inline-block;"></div>PARTNERED SERVER</div>
+					</div>
+			` }
+		};
+	}
+
+	get defaultSettings() {
+		return {
+			displayUpdateNotes: true,
+			tooltipColor: "#7289da",
+			displayDelay: 500,
+			minimalMode: false
+		};
+	}
+
 	getSettingsPanel() {
-		setTimeout(() => {
-			NeatoLib.Settings.pushElements([
-				NeatoLib.Settings.Elements.createNewTextField("Tooltip color", this.settings.tooltipColor, e => {
-					this.settings.tooltipColor = e.target.value;
-					this.saveSettings();
-				}),
-
-				NeatoLib.DOM.createElement({
-					innerHTML: `
-							<div class="tooltip tooltip-right dst-tooltip" style="position: relative; margin-top: 20px;">
-									Kappa Stretch Server
-									<div class="dst-tooltip-icon" style="background-image: url(https://cdn.discordapp.com/attachments/392905457486004224/457784406313271296/KappaStretch.png);"></div>
-									<div id="dst-tooltip-owner-label" class="dst-tooltip-label">Owner: KappaStretch#0000</div>
-									<div class="dst-tooltip-label">Joined at: ${new Date().toLocaleDateString()}, ${new Date().toLocaleTimeString()} (0 days ago)</div>
-									<div id="dst-tooltip-member-count-label" class="dst-tooltip-label">400 members</div>
-									<div class="dst-tooltip-label">15 channels</div>
-									<div class="dst-tooltip-label">10 roles</div>
-									<div class="dst-tooltip-label">Region: us-central</div>
-									<div style="font-weight: bolder;" class="dst-tooltip-label"><div class="profileBadgePartner-SjK6L2 profileBadge-2BqF-Z" style="display: inline-block;"></div>PARTNERED SERVER</div>
-							</div>
-					`
-				}),
-
-				NeatoLib.Settings.Elements.createNewTextField("Tooltip display delay (ms)", this.settings.displayDelay, e => {
-					this.settings.displayDelay = e.target.value;
-					this.saveSettings();
-				}),
-
-				NeatoLib.Settings.Elements.createToggleSwitch("Minimal mode", this.settings.minimalMode, () => {
-					this.settings.minimalMode = !this.settings.minimalMode;
-					this.saveSettings();
-				})
-			], this.getName());
-
-			NeatoLib.Settings.pushChangelogElements(this);
-		}, 0);
-
-		return NeatoLib.Settings.Elements.pluginNameLabel(this.getName());
+		return NeatoLib.Settings.createPanel(this);
 	}
 
 	saveSettings() {
@@ -139,14 +149,9 @@ class DetailedServerTooltips {
 	}
 
 	onLibLoaded() {
-		if (!NeatoLib.hasRequiredLibVersion(this, "0.0.6")) return;
+		if (!NeatoLib.hasRequiredLibVersion(this, "0.8.20")) return;
 
-		this.settings = NeatoLib.Settings.load(this, {
-			displayUpdateNotes: true,
-			tooltipColor: "#7289da",
-			displayDelay: 500,
-			minimalMode: false
-		});
+		NeatoLib.Settings.load(this);
 
 		NeatoLib.Updates.check(this);
 
@@ -159,7 +164,7 @@ class DetailedServerTooltips {
 
 		this.localUser = NeatoLib.getLocalUser();
 
-		let reqMemModule = NeatoLib.Modules.get("requestMembers");
+		const reqMemModule = NeatoLib.Modules.get("requestMembers");
 		this.forceReqMembers = gid => reqMemModule.requestMembers(gid, "", 0);
 
 		this.memberCounts = {};
@@ -183,12 +188,24 @@ class DetailedServerTooltips {
 			timeout = setTimeout(() => {
 				tooltip = this.tooltip((e.target.parentElement.href.match(/\d+/) || [])[0], e.target);
 				if (!tooltip) return;
-				document.getElementsByClassName("tooltips")[0].appendChild(tooltip);
+				document.getElementsByClassName(NeatoLib.getClass("tooltips"))[0].appendChild(tooltip);
 				let bottomPos = parseFloat(tooltip.style.top) + tooltip.offsetHeight;
 				if (bottomPos > window.innerHeight) {
 					tooltip.style.top = (parseFloat(tooltip.style.top) - (bottomPos - window.innerHeight)) + "px";
 					tooltip.insertAdjacentHTML("afterbegin", `<style>.dst-tooltip:after{top:calc(25px + ${parseFloat(tooltip.style.top) - (parseFloat(tooltip.style.top) - (bottomPos - window.innerHeight))}px) !important}</style>`);
 				}
+				var tooltipObserver = new MutationObserver((mutations) => {
+					mutations.forEach((mutation) => {
+						var nodes = Array.from(mutation.removedNodes);
+						var ownMatch = nodes.indexOf(tooltip) > -1;
+						var directMatch = nodes.indexOf(e.target) > -1;
+						var parentMatch = nodes.some(parent => parent.contains(e.target));
+						if (ownMatch || directMatch || parentMatch) {
+							tooltipObserver.disconnect();
+							tooltip.remove();
+						}
+					});
+				});
 			}, this.settings.displayDelay);
 		};
 
@@ -200,10 +217,8 @@ class DetailedServerTooltips {
 		this.switchEvent = () => this.applyToGuilds();
 
 		this.guildObserver = new MutationObserver(this.switchEvent);
-		this.guildObserver.observe(document.getElementsByClassName(NeatoLib.getClass("guilds"))[0], {
-			childList: true,
-			subtree: true
-		});
+		this.guildObserver.observe(document.getElementsByClassName(NeatoLib.getClass("unreadMentionsBar", "scroller"))[0], { childList: true, subtree: true });
+		this.guildObserver.observe(document.getElementsByClassName(NeatoLib.getClass("firefoxFixScrollFlex"))[0], { childList: true, subtree: true });
 
 		NeatoLib.Events.attach("switch", this.switchEvent);
 
@@ -213,7 +228,7 @@ class DetailedServerTooltips {
 	}
 
 	applyToGuilds(detach) {
-		const guilds = document.getElementsByClassName(NeatoLib.getClass("guildIcon"));
+		const guilds = document.getElementsByClassName(NeatoLib.getClass("lurkingGuild", "guildIcon"));
 
 		for (let i = 0; i < guilds.length; i++) {
 			let reactEvents = NeatoLib.ReactData.getEvents(guilds[i]);
@@ -246,13 +261,13 @@ class DetailedServerTooltips {
 	}
 
 	tooltip(guildId, element) {
-		if (!guildId || !element) return;
+		if (!guildId || !element || element.getBoundingClientRect().width == 0) return;
 
 		const tooltip = document.createElement("div"),
 			guild = this.guildModule.getGuild(guildId),
 			owner = this.userModule.getUser(guild.ownerId);
 
-		tooltip.className = "tooltip tooltip-right dst-tooltip";
+		tooltip.className = NeatoLib.getClass("tooltips", "tooltip") + " " + NeatoLib.getClass("tooltips", "right") + " dst-tooltip";
 		if (this.settings.minimalMode) tooltip.classList.add("dst-min");
 
 		tooltip.style.left = (element.getBoundingClientRect().left + element.offsetWidth) + "px";
@@ -277,7 +292,7 @@ class DetailedServerTooltips {
 		this.memberCounts[guildId] = this.memberModule.getMembers(guildId).length;
 
 		const self = setInterval(() => {
-			if (!document.getElementsByClassName("tooltips")[0].contains(tooltip)) return clearInterval(self);
+			if (!document.getElementsByClassName(NeatoLib.getClass("tooltips"))[0].contains(tooltip)) return clearInterval(self);
 			this.memberCounts[guildId] = this.memberModule.getMembers(guildId).length;
 			document.getElementById("dst-tooltip-owner-label").innerText = "Owner: " + (owner ? owner.tag : "unknown");
 			document.getElementById("dst-tooltip-member-count-label").innerText = this.memberCounts[guildId] + " members";

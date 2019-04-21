@@ -1,17 +1,25 @@
-//META{"name":"CharCounter"}*//
+//META{"name":"CharCounter","website":"https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/CharCounter","source":"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/CharCounter/CharCounter.plugin.js"}*//
 
 class CharCounter {
+	getName () {return "CharCounter";}
+
+	getVersion () {return "1.3.3";}
+
+	getAuthor () {return "DevilBro";}
+
+	getDescription () {return "Adds a charcounter in the chat.";}
+
 	initConstructor () {
-		this.moduleTypes = {
+		this.changelog = {
+			"fixed":[["Parsed Length","The character counter show the parsed length (which determines if a message is over 2000 chars) again like it used to, instead of the literal length"]]
+		};
+		
+		this.patchModules = {
 			"ChannelTextArea":"componentDidMount",
 			"Note":"componentDidMount",
 			"Modal":"componentDidMount"
 		};
-		
-		this.selecting = false;
-		
-		this.counterMarkup = `<div id="charcounter" class="charcounter"></div>`;
-		
+
 		this.maxLenghts = {
 			normal: 2000,
 			edit: 2000,
@@ -73,139 +81,95 @@ class CharCounter {
 			}`;
 	}
 
-	getName () {return "CharCounter";}
-
-	getDescription () {return "Adds a charcounter in the chat.";}
-
-	getVersion () {return "1.3.0";}
-
-	getAuthor () {return "DevilBro";}
-
 	//legacy
 	load () {}
 
 	start () {
-		var libraryScript = null;
-		if (typeof BDFDB !== "object" || BDFDB.isLibraryOutdated()) {
-			if (typeof BDFDB === "object") BDFDB = "";
-			libraryScript = document.querySelector('head script[src="https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js"]');
+		var libraryScript = document.querySelector('head script[src="https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js"]');
+		if (!libraryScript || performance.now() - libraryScript.getAttribute("date") > 600000) {
 			if (libraryScript) libraryScript.remove();
 			libraryScript = document.createElement("script");
 			libraryScript.setAttribute("type", "text/javascript");
 			libraryScript.setAttribute("src", "https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js");
+			libraryScript.setAttribute("date", performance.now());
+			libraryScript.addEventListener("load", () => {if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) this.initialize();});
 			document.head.appendChild(libraryScript);
 		}
+		else if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) this.initialize();
 		this.startTimeout = setTimeout(() => {this.initialize();}, 30000);
-		if (typeof BDFDB === "object") this.initialize();
-		else libraryScript.addEventListener("load", () => {this.initialize();});
 	}
 
 	initialize () {
-		if (typeof BDFDB === "object") {
+		if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) {
+			if (this.started) return;
 			BDFDB.loadMessage(this);
-			
-			for (let type in this.moduleTypes) {
-				let module = BDFDB.WebModules.findByName(type);
-				if (module && module.prototype) BDFDB.WebModules.patch(module.prototype, this.moduleTypes[type], this, {after: (e) => {this.initiateProcess(e.thisObject, type);}});
-			}
-			
-			this.forceAllUpdates();
+
+			BDFDB.WebModules.forceAllUpdates(this);
 		}
 		else {
-			console.error(this.getName() + ": Fatal Error: Could not load BD functions!");
+			console.error(`%c[${this.name}]%c`, 'color: #3a71c1; font-weight: 700;', '', 'Fatal Error: Could not load BD functions!');
 		}
 	}
 
 
 	stop () {
-		if (typeof BDFDB === "object") {
-			$(".charcounter").remove();
-			$(".charcounter-added").removeClass("charcounter-added");
-						
+		if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) {
+			BDFDB.removeEles(".charcounter");
+			BDFDB.removeClasses("charcounter-added");
 			BDFDB.unloadMessage(this);
 		}
 	}
-	
-	
+
+
 	// begin of own functions
-	
-	initiateProcess (instance, type) {
-		type = type.replace(/[^A-z]/g,"");
-		type = type[0].toUpperCase() + type.slice(1);
-		if (typeof this["process" + type] == "function") {
-			let wrapper = BDFDB.React.findDOMNodeSafe(instance);
-			if (wrapper) this["process" + type](instance, wrapper);
-			else setImmediate(() => {
-				this["process" + type](instance, BDFDB.React.findDOMNodeSafe(instance));
-			});
-		}
-	}
-	
+
 	processChannelTextArea (instance, wrapper) {
-		if (!wrapper) return;
-		if (instance.props && instance.props.type && this.maxLenghts[instance.props.type]) this.appendCounter(wrapper.querySelector("textarea"), instance.props.type);
+		if (instance.props && instance.props.type && this.maxLenghts[instance.props.type]) this.appendCounter(wrapper.querySelector("textarea"), instance.props.type, true);
 	}
-	
+
 	processNote (instance, wrapper) {
-		if (!wrapper) return;
-		if (wrapper.classList) this.appendCounter(wrapper.firstElementChild, wrapper.classList.contains(BDFDB.disCN.usernotepopout) ? "popout" : (wrapper.classList.contains(BDFDB.disCN.usernoteprofile) ? "profile" : null));
+		this.appendCounter(wrapper.firstElementChild, BDFDB.containsClass(wrapper, BDFDB.disCN.usernotepopout) ? "popout" : (BDFDB.containsClass(wrapper, BDFDB.disCN.usernoteprofile) ? "profile" : null), false);
 	}
-	
+
 	processModal (instance, wrapper) {
-		if (!wrapper) return;
 		if (instance.props && instance.props.tag == "form") {
 			let reset = wrapper.querySelector(BDFDB.dotCN.reset);
-			if (reset && BDFDB.getInnerText(reset.firstElementChild) == BDFDB.LanguageStrings.RESET_NICKNAME) this.appendCounter(wrapper.querySelector(BDFDB.dotCN.inputdefault), "nickname");
+			if (reset && BDFDB.getInnerText(reset.firstElementChild) == BDFDB.LanguageStrings.RESET_NICKNAME) this.appendCounter(wrapper.querySelector(BDFDB.dotCN.inputdefault), "nickname", false);
 		}
 	}
-	
-	appendCounter (input, type) {
+
+	appendCounter (input, type, parsing) {
 		if (!input || !type) return;
-		var counter = $(this.counterMarkup);
-		counter.addClass(type).appendTo(input.parentElement);
-		
+		BDFDB.removeEles(input.parentElement.querySelectorAll("#charcounter"));
+		var counter = BDFDB.htmlToElement(`<div id="charcounter" class="charcounter ${type}"></div>`);
+		input.parentElement.appendChild(counter);
+
 		var updateCounter = () => {
-			var selection = input.selectionEnd - input.selectionStart == 0 ? "" : " (" + (input.selectionEnd - input.selectionStart) + ")";
-			var maxLength = this.maxLenghts[type] || 2000;
-			counter.text(input.value.length + "/" + maxLength + selection);
-		}
-		
-		input.parentElement.parentElement.classList.add("charcounter-added");
+			var inputlength = parsing ? BDFDB.getParsedLength(input.value) : input.value.length;
+			var seleclength = input.selectionEnd - input.selectionStart == 0 ? 0 : (parsing ? BDFDB.getParsedLength(input.value.slice(input.selectionStart, input.selectionEnd)) : (input.selectionEnd - input.selectionStart));
+			seleclength = !seleclength ? 0 : (seleclength > inputlength ? inputlength - (inputlength - input.selectionEnd - input.selectionStart) : seleclength);
+			counter.innerText = inputlength + "/" + (this.maxLenghts[type] || 2000) + (!seleclength ? "" : " (" + seleclength + ")");
+		};
+
+		BDFDB.addClass(input.parentElement.parentElement, "charcounter-added");
 		if (type == "nickname") input.setAttribute("maxlength", 32);
-		$(input)
-			.off("keydown." + this.getName() + " click." + this.getName())
-			.on("keydown." + this.getName() + " click." + this.getName(), e => {
-				clearTimeout(input.charcountertimeout);
-				input.charcountertimeout = setTimeout(() => {updateCounter();},100);
-			})
-			.off("mousedown." + this.getName())
-			.on("mousedown." + this.getName(), e => {
-				this.selecting = true;
+		BDFDB.addEventListener(this, input, "keydown click", e => {
+			clearTimeout(input.charcountertimeout);
+			input.charcountertimeout = setTimeout(() => {updateCounter();},100);
+		});
+		BDFDB.addEventListener(this, input, "mousedown", e => {
+			BDFDB.addEventListener(this, document, "mouseup", () => {
+				BDFDB.removeEventListener(this, document);
+				if (input.selectionEnd - input.selectionStart) setImmediate(() => {BDFDB.addEventListener(this, document, "click", () => {
+					input.selectionStart = 0;
+					input.selectionEnd = 0;
+					updateCounter();
+					BDFDB.removeEventListener(this, document);
+				});});
 			});
-		$(document)
-			.off("mouseup." + this.getName())
-			.on("mouseup." + this.getName(), e => {
-				if (this.selecting) {
-					this.selecting = false;
-				}
-			})
-			.off("mousemove." + this.getName())
-			.on("mousemove." + this.getName(), e => {
-				if (this.selecting) {
-					setTimeout(() => {
-						updateCounter();
-					},10);
-				}
-			});
-		
+			BDFDB.addEventListener(this, document, "mousemove", () => {setTimeout(() => {updateCounter();},10);});
+		});
+
 		updateCounter();
-	}
-	
-	forceAllUpdates () {
-		let app = document.querySelector(BDFDB.dotCN.app);
-		if (app) {
-			let ins = BDFDB.getOwnerInstance({node:app, name:Object.keys(this.moduleTypes), all:true, noCopies:true, group:true, depth:99999999, time:99999999});
-			for (let type in ins) for (let i in ins[type]) this.initiateProcess(ins[type][i], type);
-		}
 	}
 }

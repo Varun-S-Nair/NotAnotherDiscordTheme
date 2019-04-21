@@ -2,10 +2,16 @@
 	"settings": {
 		"addInUserPopout": true,
 		"addInUserProfil": true,
-		"addJoinedAtTime": true,
-		"forceZeros": false
+		"displayTime": true,
+		"displayDate": true,
+		"cutSeconds": false,
+		"forceZeros": false,
+		"otherOrder": false
 	},
 	"choices": {
 		"joinedAtDateLang": "$discord"
+	},
+	"changelog": {
+		"currentversion": "1.0.9"
 	}
 }
