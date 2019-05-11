@@ -4,7 +4,7 @@ class DetailedServerTooltips {
 
 	getName() { return "DetailedServerTooltips"; }
 	getDescription() { return "Displays a more detailed tooltip for servers similar to user popouts. Contains a larger image, owner's tag, date, time and days ago created, date, time and days ago joined, member count, channel count, role count, region, and whether or not the server is partnered."; }
-	getVersion() { return "0.3.8"; }
+	getVersion() { return "0.3.10"; }
 	getAuthor() { return "Metalloriff"; }
 	getChanges() {
 		return {
@@ -161,13 +161,11 @@ class DetailedServerTooltips {
 		this.userModule = NeatoLib.Modules.get("getUser");
 		this.memberModule = NeatoLib.Modules.get("getMembers");
 		this.channelModule = NeatoLib.Modules.get("getChannel");
+		this.memberCountModule = NeatoLib.Modules.get("getMemberCount");
 
 		this.localUser = NeatoLib.getLocalUser();
 
-		const reqMemModule = NeatoLib.Modules.get("requestMembers");
-		this.forceReqMembers = gid => reqMemModule.requestMembers(gid, "", 0);
-
-		this.memberCounts = {};
+		this.owners = {};
 
 		this.applyCSS();
 
@@ -186,9 +184,11 @@ class DetailedServerTooltips {
 
 		this.mouseEnterGuild = e => {
 			timeout = setTimeout(() => {
-				tooltip = this.tooltip((e.target.parentElement.href.match(/\d+/) || [])[0], e.target);
+				tooltip = this.tooltip(((e.target.parentElement.href || e.target.href).match(/\d+/) || [])[0], e.target);
 				if (!tooltip) return;
-				document.getElementsByClassName(NeatoLib.getClass("tooltips"))[0].appendChild(tooltip);
+				let tt = document.getElementsByClassName(NeatoLib.getClass("tooltip"))[0];
+				tt.appendChild(tooltip);
+				tt.find("." + NeatoLib.getClass("tooltip", "tooltipPointer").trim().replace(" ", ".")).css("border-top-color", this.settings.tooltipColor);
 				let bottomPos = parseFloat(tooltip.style.top) + tooltip.offsetHeight;
 				if (bottomPos > window.innerHeight) {
 					tooltip.style.top = (parseFloat(tooltip.style.top) - (bottomPos - window.innerHeight)) + "px";
@@ -228,7 +228,7 @@ class DetailedServerTooltips {
 	}
 
 	applyToGuilds(detach) {
-		const guilds = document.getElementsByClassName(NeatoLib.getClass("lurkingGuild", "guildIcon"));
+		const guilds = document.getElementsByClassName(NeatoLib.getClass("acronym", "wrapper"));
 
 		for (let i = 0; i < guilds.length; i++) {
 			let reactEvents = NeatoLib.ReactData.getEvents(guilds[i]);
@@ -263,39 +263,53 @@ class DetailedServerTooltips {
 	tooltip(guildId, element) {
 		if (!guildId || !element || element.getBoundingClientRect().width == 0) return;
 
-		const tooltip = document.createElement("div"),
+		let tooltip = document.createElement("div"),
 			guild = this.guildModule.getGuild(guildId),
 			owner = this.userModule.getUser(guild.ownerId);
 
-		tooltip.className = NeatoLib.getClass("tooltips", "tooltip") + " " + NeatoLib.getClass("tooltips", "right") + " dst-tooltip";
+		tooltip.className = NeatoLib.getClass("tooltip") + " " + NeatoLib.getClass("tooltip", "tooltipRight") + " dst-tooltip";
 		if (this.settings.minimalMode) tooltip.classList.add("dst-min");
 
-		tooltip.style.left = (element.getBoundingClientRect().left + element.offsetWidth) + "px";
+		tooltip.style.left = (element.getBoundingClientRect().left + element.offsetWidth + 8) + "px";
 		tooltip.style.top = ((element.getBoundingClientRect().top + (element.offsetHeight / 2)) - (tooltip.offsetHeight / 2) - 25) + "px";
+		tooltip.style.position = "fixed";
 
 		let creationDate = NeatoLib.getSnowflakeCreationDate(guild.id);
 
-		tooltip.innerHTML = `${guild.name}
+		tooltip.innerHTML = `${this.escapeHtml(guild.name)}
 				<div class="dst-tooltip-icon" style="background-image: url(${guild.getIconURL()}?size=2048);"></div>
-				<div id="dst-tooltip-owner-label" class="dst-tooltip-label">Owner: ${owner ? owner.tag : "unknown"}</div>
+				<div id="dst-tooltip-owner-label" class="dst-tooltip-label">Owner: ${owner ? this.escapeHtml(owner.tag) : "unknown"}</div>
 				<div class="dst-tooltip-label">Created at: ${creationDate.toLocaleDateString()}, ${creationDate.toLocaleTimeString()} (${Math.round(Math.abs(creationDate.getTime() - new Date().getTime()) / 86400000)} days ago)</div>
 				${creationDate.toString() == guild.joinedAt.toString() ? "" : `<div class="dst-tooltip-label">Joined at: ${guild.joinedAt.toLocaleDateString()}, ${guild.joinedAt.toLocaleTimeString()} (${Math.round(Math.abs(guild.joinedAt.getTime() - new Date().getTime()) / 86400000)} days ago)</div>`}
-				<div id="dst-tooltip-member-count-label" class="dst-tooltip-label">${this.memberCounts[guildId] ? this.memberCounts[guildId] : "Loading"} members</div>
-				<div class="dst-tooltip-label">${Array.filter(Object.values(this.channelModule.getChannels()), c => c.guild_id == guildId).length} channels</div>
+				<div id="dst-tooltip-member-count-label" class="dst-tooltip-label">${this.memberCountModule.getMemberCount(guildId)} members</div>
+				<div class="dst-tooltip-label">${Object.values(this.channelModule.getChannels()).filter(c => c.guild_id == guildId).length} channels</div>
 				<div class="dst-tooltip-label">${Object.keys(guild.roles).length} roles</div>
 				<div class="dst-tooltip-label">Region: ${guild.region}</div>`;
 
+		if(!guild.getIconURL()) tooltip.find(".dst-tooltip-icon").outerHTML = "";
+
 		if (guild.features.size > 0) tooltip.insertAdjacentHTML("beforeend", `<div style="font-weight: bolder;" class="dst-tooltip-label"><div class="profileBadgePartner-SjK6L2 profileBadge-2BqF-Z" style="display: inline-block;"></div>PARTNERED SERVER</div>`);
 
-		if (!this.memberCounts[guildId]) this.forceReqMembers(guildId);
+		if(owner){
+			this.owners[guildId] = owner.tag;
+		}else{
+			NeatoLib.Modules.get("getAPIBaseURL").get(NeatoLib.Modules.get(["Permissions", "ActivityTypes", "StatusTypes"]).Endpoints.USER(guild.ownerId)).then(result => {
+				if(!result) return;
+				let res = JSON.parse(result.text);
+				this.owners[guildId] = res.username + "#" + res.discriminator;
+			});
+		}
 
-		this.memberCounts[guildId] = this.memberModule.getMembers(guildId).length;
+		let updateMemberCount = false;
+		if(this.memberCountModule.getMemberCount(guildId) < 500){
+			NeatoLib.Modules.get("requestMembers").requestMembers(guildId, "", 0);
+			updateMemberCount = true;
+		}
 
 		const self = setInterval(() => {
-			if (!document.getElementsByClassName(NeatoLib.getClass("tooltips"))[0].contains(tooltip)) return clearInterval(self);
-			this.memberCounts[guildId] = this.memberModule.getMembers(guildId).length;
-			document.getElementById("dst-tooltip-owner-label").innerText = "Owner: " + (owner ? owner.tag : "unknown");
-			document.getElementById("dst-tooltip-member-count-label").innerText = this.memberCounts[guildId] + " members";
+			if (!Array.from(document.getElementsByClassName(NeatoLib.getClass("tooltip"))).includes(tooltip)) return clearInterval(self);
+			document.getElementById("dst-tooltip-owner-label").innerHTML = "Owner: " + (this.escapeHtml(this.owners[guildId] || "unknown"));
+			if(updateMemberCount) document.getElementById("dst-tooltip-member-count-label").innerText = this.memberModule.getMembers(guildId).length + " members";
 		}, 500);
 
 		tooltip.updateLoop = self;
@@ -318,6 +332,14 @@ class DetailedServerTooltips {
 		NeatoLib.Events.detach("switch", this.switchEvent);
 
 		this.guildObserver.disconnect();
+	}
+
+	escapeHtml(txt){
+		return txt.replace(/&/g, "&amp;")
+				  .replace(/</g, "&lt;")
+				  .replace(/>/g, "&gt;")
+				  .replace(/"/g, "&quot;")
+				  .replace(/'/g, "&#039;");
 	}
 
 }

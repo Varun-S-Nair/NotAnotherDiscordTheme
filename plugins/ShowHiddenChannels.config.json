@@ -3,13 +3,14 @@
 		"showText": true,
 		"showVoice": true,
 		"showCategory": true,
+		"showForNormal": true,
 		"showAllowedRoles": true,
-		"showAllowedUsers": true,
 		"showOverWrittenRoles": true,
+		"showAllowedUsers": true,
 		"showDeniedRoles": true,
 		"showDeniedUsers": true,
-		"showForNormal": true,
 		"showTopic": true,
+		"showChannelCategory": true,
 		"showVoiceUsers": true
 	},
 	"categorystatus": {
@@ -18,12 +19,18 @@
 		"430424577877868551": true,
 		"467094234994835469": true,
 		"487654964869464074": false,
-		"441053566296391690": true
+		"441053566296391690": true,
+		"459293921269383209": true,
+		"455490388854046735": true,
+		"476978785514946570": true,
+		"570979472350642176": true,
+		"486217652487061504": true,
+		"536785167000403989": true
 	},
 	"amounts": {
 		"hoverDelay": 0
 	},
 	"changelog": {
-		"currentversion": "2.4.7"
+		"currentversion": "2.4.9"
 	}
 }

@@ -119,7 +119,7 @@ var ZeresPluginLibrary =
 /*! exports provided: info, changelog, main, default */
 /***/ (function(module) {
 
-module.exports = {"info":{"name":"ZeresPluginLibrary","authors":[{"name":"Zerebos","discord_id":"249746236008169473","github_username":"rauenzi","twitter_username":"ZackRauen"}],"version":"1.2.3","description":"Gives other plugins utility functions and the ability to emulate v2.","github":"https://github.com/rauenzi/BDPluginLibrary","github_raw":"https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js"},"changelog":[{"title":"Improvements","type":"improved","items":["Added module grabbing via string(s) in WebpackModules.","Added additional DOMTool functions. (escapeHTML, onMount, etc.)","Improved DOM listening events."]},{"title":"Bugs Squashed","type":"fixed","items":["Fixed too many logs from ReactComponents.","Fixed JSON stringify issues with string formatters.","Fix internal showUserPopout function."]}],"main":"plugin.js"};
+module.exports = {"info":{"name":"ZeresPluginLibrary","authors":[{"name":"Zerebos","discord_id":"249746236008169473","github_username":"rauenzi","twitter_username":"ZackRauen"}],"version":"1.2.4","description":"Gives other plugins utility functions and the ability to emulate v2.","github":"https://github.com/rauenzi/BDPluginLibrary","github_raw":"https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js"},"changelog":[{"title":"Bugs Squashed","type":"fixed","items":["flat() instead of flatten()"]}],"main":"plugin.js"};
 
 /***/ }),
 
@@ -948,9 +948,9 @@ class DOMTools {
      * @returns {Element} - `element` to allow for chaining
      */
     static addClass(element, ...classes) {
-        classes = classes.flatten().filter(c => c);
+        classes = classes.flat().filter(c => c);
         for (let c = 0; c < classes.length; c++) classes[c] = classes[c].toString().split(" ");
-        classes = classes.flatten().filter(c => c);
+        classes = classes.flat().filter(c => c);
         element.classList.add(...classes);
         return element;
     }
@@ -963,7 +963,7 @@ class DOMTools {
      */
     static removeClass(element, ...classes) {
         for (let c = 0; c < classes.length; c++) classes[c] = classes[c].toString().split(" ");
-        classes = classes.flatten().filter(c => c);
+        classes = classes.flat().filter(c => c);
         element.classList.remove(...classes);
         return element;
     }
@@ -1470,7 +1470,7 @@ class DOMTools {
             callback();
         };
         this.observer.subscribe(wrappedCallback, mutation => {
-            const nodes = Array.from(onMount ? mutation.addedNode : mutation.removedNodes);
+            const nodes = Array.from(onMount ? mutation.addedNodes : mutation.removedNodes);
             const directMatch = nodes.indexOf(node) > -1;
             const parentMatch = nodes.some(parent => parent.contains(node));
             return directMatch || parentMatch;
@@ -3820,7 +3820,7 @@ __webpack_require__.r(__webpack_exports__);
         get Library() {return Library;}
         
         load() {
-            this.start();
+            super.load();
             const exists = document.getElementById("ZLibraryCSS");
             PluginUtilities.removeStyle("ZLibraryCSS");
             PluginUtilities.addStyle("ZLibraryCSS", Settings.CSS + Toasts.CSS + PluginUpdater.CSS);
@@ -6196,16 +6196,17 @@ __webpack_require__.r(__webpack_exports__);
         getDescription() { return this._config.info.description; }
         getVersion() { return this._config.info.version; }
         getAuthor() { return this._config.info.authors.map(a => a.name).join(", "); }
-        load() {}
-        async start() {
-            _modules_logger__WEBPACK_IMPORTED_MODULE_1__["default"].info(this.getName(), `version ${this.getVersion()} has started.`);
-            if (this.defaultSettings) this.settings = this.loadSettings();
+        load() {
             const currentVersionInfo = _modules_pluginutilities__WEBPACK_IMPORTED_MODULE_4__["default"].loadData(this.getName(), "currentVersionInfo", {version: this.getVersion(), hasShownChangelog: false});
             if (currentVersionInfo.version != this.getVersion() || !currentVersionInfo.hasShownChangelog) {
                 this.showChangelog();
                 _modules_pluginutilities__WEBPACK_IMPORTED_MODULE_4__["default"].saveData(this.getName(), "currentVersionInfo", {version: this.getVersion(), hasShownChangelog: true});
             }
             _modules_pluginupdater__WEBPACK_IMPORTED_MODULE_0__["default"].checkForUpdate(this.getName(), this.getVersion(), this._config.info.github_raw);
+        }
+        async start() {
+            _modules_logger__WEBPACK_IMPORTED_MODULE_1__["default"].info(this.getName(), `version ${this.getVersion()} has started.`);
+            if (this.defaultSettings) this.settings = this.loadSettings();
             this._enabled = true;
             if (typeof(this.onStart) == "function") this.onStart();
         }
@@ -7113,36 +7114,36 @@ class Popouts {
      * Shows the user popout for a user relative to a target element
      * @param {HTMLElement} target - Element to show the popout in relation to
      * @param {object} user - Discord User object for the user to show
-	 * @param {object} [options] - Options to modify the request
+     * @param {object} [options] - Options to modify the request
      * @param {string} [options.guild="currentGuildId"] - Id of the guild  (uses current if not specified)
      * @param {string} [options.channel="currentChannelId"] - Id of the channel (uses current if not specified)
-	 * @param {string} [options.position="right"] - Positioning relative to element
+     * @param {string} [options.position="right"] - Positioning relative to element
      */
     static showUserPopout(target, user, options = {}) {
-		const {guild = modules__WEBPACK_IMPORTED_MODULE_1__["DiscordModules"].SelectedGuildStore.getGuildId(), channel = modules__WEBPACK_IMPORTED_MODULE_1__["DiscordModules"].SelectedChannelStore.getChannelId()} = options;
-		let {position = "right"} = options;
-		target = modules__WEBPACK_IMPORTED_MODULE_1__["DOMTools"].resolveElement(target);
-		if (target.getBoundingClientRect().right + 250 >= structs__WEBPACK_IMPORTED_MODULE_0__["Screen"].width) position = "left";
-		modules__WEBPACK_IMPORTED_MODULE_1__["DiscordModules"].PopoutOpener.openPopout(target, {
-			position: position,
-			offsetX: 0,
-			offsetY: 0,
-			animationType: "default",
-			preventInvert: false,
-			zIndexBoost: 0,
-			closeOnScroll: false,
-			shadow: false,
-			backdrop: false,
-			toggleClose: true,
-			render: (props) => {
-				return modules__WEBPACK_IMPORTED_MODULE_1__["DiscordModules"].React.createElement(modules__WEBPACK_IMPORTED_MODULE_1__["DiscordModules"].UserPopout, Object.assign({}, props, {
-					user: user,
-					guildId: guild,
-					channelId: channel
-				}));
-			}
-		}, "ZeresLibrary");
-	}
+        const {guild = modules__WEBPACK_IMPORTED_MODULE_1__["DiscordModules"].SelectedGuildStore.getGuildId(), channel = modules__WEBPACK_IMPORTED_MODULE_1__["DiscordModules"].SelectedChannelStore.getChannelId()} = options;
+        let {position = "right"} = options;
+        target = modules__WEBPACK_IMPORTED_MODULE_1__["DOMTools"].resolveElement(target);
+        if (target.getBoundingClientRect().right + 250 >= structs__WEBPACK_IMPORTED_MODULE_0__["Screen"].width) position = "left";
+        modules__WEBPACK_IMPORTED_MODULE_1__["DiscordModules"].PopoutOpener.openPopout(target, {
+            position: position,
+            offsetX: 0,
+            offsetY: 0,
+            animationType: "default",
+            preventInvert: false,
+            zIndexBoost: 0,
+            closeOnScroll: false,
+            shadow: false,
+            backdrop: false,
+            toggleClose: true,
+            render: (props) => {
+                return modules__WEBPACK_IMPORTED_MODULE_1__["DiscordModules"].React.createElement(modules__WEBPACK_IMPORTED_MODULE_1__["DiscordModules"].UserPopout, Object.assign({}, props, {
+                    user: user,
+                    guildId: guild,
+                    channelId: channel
+                }));
+            }
+        }, "ZeresLibrary");
+    }
 }
 
 /***/ }),
