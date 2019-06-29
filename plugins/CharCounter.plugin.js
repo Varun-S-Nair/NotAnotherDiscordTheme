@@ -3,7 +3,7 @@
 class CharCounter {
 	getName () {return "CharCounter";}
 
-	getVersion () {return "1.3.3";}
+	getVersion () {return "1.3.4";}
 
 	getAuthor () {return "DevilBro";}
 
@@ -11,7 +11,7 @@ class CharCounter {
 
 	initConstructor () {
 		this.changelog = {
-			"fixed":[["Parsed Length","The character counter show the parsed length (which determines if a message is over 2000 chars) again like it used to, instead of the literal length"]]
+			"fixed":[["Context Menu","Fixed the issue where the plugin would break the copy/paste actions via the textarea contextmenu"]]
 		};
 		
 		this.patchModules = {
@@ -85,6 +85,8 @@ class CharCounter {
 	load () {}
 
 	start () {
+		if (!global.BDFDB) global.BDFDB = {myPlugins:{}};
+		if (global.BDFDB && global.BDFDB.myPlugins && typeof global.BDFDB.myPlugins == "object") global.BDFDB.myPlugins[this.getName()] = this;
 		var libraryScript = document.querySelector('head script[src="https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js"]');
 		if (!libraryScript || performance.now() - libraryScript.getAttribute("date") > 600000) {
 			if (libraryScript) libraryScript.remove();
@@ -107,7 +109,7 @@ class CharCounter {
 			BDFDB.WebModules.forceAllUpdates(this);
 		}
 		else {
-			console.error(`%c[${this.name}]%c`, 'color: #3a71c1; font-weight: 700;', '', 'Fatal Error: Could not load BD functions!');
+			console.error(`%c[${this.getName()}]%c`, 'color: #3a71c1; font-weight: 700;', '', 'Fatal Error: Could not load BD functions!');
 		}
 	}
 
@@ -161,9 +163,13 @@ class CharCounter {
 			BDFDB.addEventListener(this, document, "mouseup", () => {
 				BDFDB.removeEventListener(this, document);
 				if (input.selectionEnd - input.selectionStart) setImmediate(() => {BDFDB.addEventListener(this, document, "click", () => {
-					input.selectionStart = 0;
-					input.selectionEnd = 0;
-					updateCounter();
+					var contexttype = BDFDB.getReactValue(document.querySelector(BDFDB.dotCN.contextmenu), "return.stateNode.props.type");
+					if (!contexttype || !contexttype.startsWith("CHANNEL_TEXT_AREA")) {
+						input.selectionStart = 0;
+						input.selectionEnd = 0;
+						updateCounter();
+					}
+					else setTimeout(() => {updateCounter();},100);
 					BDFDB.removeEventListener(this, document);
 				});});
 			});

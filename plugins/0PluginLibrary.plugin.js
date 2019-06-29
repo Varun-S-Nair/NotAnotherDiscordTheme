@@ -119,7 +119,7 @@ var ZeresPluginLibrary =
 /*! exports provided: info, changelog, main, default */
 /***/ (function(module) {
 
-module.exports = {"info":{"name":"ZeresPluginLibrary","authors":[{"name":"Zerebos","discord_id":"249746236008169473","github_username":"rauenzi","twitter_username":"ZackRauen"}],"version":"1.2.4","description":"Gives other plugins utility functions and the ability to emulate v2.","github":"https://github.com/rauenzi/BDPluginLibrary","github_raw":"https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js"},"changelog":[{"title":"Bugs Squashed","type":"fixed","items":["flat() instead of flatten()"]}],"main":"plugin.js"};
+module.exports = {"info":{"name":"ZeresPluginLibrary","authors":[{"name":"Zerebos","discord_id":"249746236008169473","github_username":"rauenzi","twitter_username":"ZackRauen"}],"version":"1.2.6","description":"Gives other plugins utility functions and the ability to emulate v2.","github":"https://github.com/rauenzi/BDPluginLibrary","github_raw":"https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js"},"changelog":[{"title":"Bugs Squashed","type":"fixed","items":["showUserPopout works properly once more."]}],"main":"plugin.js"};
 
 /***/ }),
 
@@ -140,6 +140,7 @@ __webpack_require__.r(__webpack_exports__);
 const Library = {};
 Library.ContextMenu = ui__WEBPACK_IMPORTED_MODULE_1__["ContextMenu"];
 Library.Tooltip = ui__WEBPACK_IMPORTED_MODULE_1__["Tooltip"];
+Library.EmulatedTooltip = ui__WEBPACK_IMPORTED_MODULE_1__["EmulatedTooltip"];
 Library.Toasts = ui__WEBPACK_IMPORTED_MODULE_1__["Toasts"];
 Library.Settings = ui__WEBPACK_IMPORTED_MODULE_1__["Settings"];
 Library.Popouts = ui__WEBPACK_IMPORTED_MODULE_1__["Popouts"];
@@ -499,6 +500,7 @@ __webpack_require__.r(__webpack_exports__);
 	get Titlebar() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("titleBar");},
 	get Embeds() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("embed", "embedAuthor");},
 	get Layers() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("layers", "layer");},
+	get TooltipLayers() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("layerContainer", "layer");},
 	get Margins() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getModule(m => !m.title && m.marginBottom40 && m.marginTop40);},
 	get Dividers() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getModule(m => m.dividerDefault);},
 	get Changelog() {return Object.assign({}, _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("container", "added"), _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("content", "modal", "size"));},
@@ -507,7 +509,8 @@ __webpack_require__.r(__webpack_exports__);
 	get Guilds() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("guildsWrapper");},
 	get EmojiPicker() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("emojiPicker", "emojiItem");},
 	get Reactions() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("reaction", "reactionInner");},
-	get Checkbox() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("checkbox", "checkboxInner");}
+	get Checkbox() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("checkbox", "checkboxInner");},
+	get Tooltips() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("tooltip", "tooltipBlack");}
 }));
 
 
@@ -716,17 +719,7 @@ __webpack_require__.r(__webpack_exports__);
     get PopoutOpener() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByProps("openPopout");},
     get EmojiPicker() {return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByDisplayName("FluxContainer(EmojiPicker)");},
     get UserPopout() {
-        const module = _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].find(m => {
-            if (!m.render) return false;
-            try {
-                const container = m.render({}).type;
-                new container({});
-                return false;
-            }
-            catch (e) {return e.toString().includes("'id'");}
-        });
-        if (module.render) return module.render;
-        return module;
+        return _webpackmodules__WEBPACK_IMPORTED_MODULE_1__["default"].getByDisplayName("FluxContainer(ForwardRef(SubscribeGuildMembersContainer(UserPopout)))");
     },
 
     /* Context Menus */
@@ -1488,7 +1481,7 @@ class DOMTools {
     static onAdded(node, callback) { return this.onMount(node, callback); }
 
     /** Alias for {@link module:DOMTools.onUnmount} */
-    static onRemoved(node, callback) { return this.onUnmount(node, callback); }
+    static onRemoved(node, callback) { return this.onUnmount(node, callback, false); }
 
     /**
      * Helper function which combines multiple elements into one parent element
@@ -2147,7 +2140,7 @@ class PluginUpdater {
 		updateButton.onclick = function () {
 			window.PluginUpdates.checkAll();
 		};
-		const tooltip = new ui__WEBPACK_IMPORTED_MODULE_6__["Tooltip"](updateButton, "Checks for updates of plugins that support this feature. Right-click for a list.");
+		const tooltip = new ui__WEBPACK_IMPORTED_MODULE_6__["EmulatedTooltip"](updateButton, "Checks for updates of plugins that support this feature. Right-click for a list.");
 		updateButton.oncontextmenu = function () {
 			if (!window.PluginUpdates || !window.PluginUpdates.plugins) return;
 			tooltip.label = Object.values(window.PluginUpdates.plugins).map(p => p.name).join(", ");
@@ -2189,7 +2182,7 @@ class PluginUpdater {
 			if (!window.PluginUpdates.downloaded) {
 				window.PluginUpdates.downloaded = [];
 				const button = _domtools__WEBPACK_IMPORTED_MODULE_2__["default"].parseHTML(`<button class="btn btn-reload ${_discordclasses__WEBPACK_IMPORTED_MODULE_4__["default"].Notices.btn} ${_discordclasses__WEBPACK_IMPORTED_MODULE_4__["default"].Notices.button}">Reload</button>`);
-				const tooltip = new ui__WEBPACK_IMPORTED_MODULE_6__["Tooltip"](button, window.PluginUpdates.downloaded.join(", "), {side: "top"});
+				const tooltip = new ui__WEBPACK_IMPORTED_MODULE_6__["EmulatedTooltip"](button, window.PluginUpdates.downloaded.join(", "), {side: "top"});
 				button.addEventListener("click", (e) => {
 					e.preventDefault();
 					window.location.reload(false);
@@ -6482,7 +6475,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".plugin-input-group {\r\n    margin-top: 5px;\r\n}\r\n\r\n.plugin-input-group .button-collapse {\r\n    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FscXVlXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSItOTUwIDUzMiAxOCAxOCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAtOTUwIDUzMiAxOCAxODsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6bm9uZTt9DQoJLnN0MXtmaWxsOm5vbmU7c3Ryb2tlOiNGRkZGRkY7c3Ryb2tlLXdpZHRoOjEuNTtzdHJva2UtbWl0ZXJsaW1pdDoxMDt9DQo8L3N0eWxlPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTS05MzIsNTMydjE4aC0xOHYtMThILTkzMnoiLz4NCjxwb2x5bGluZSBjbGFzcz0ic3QxIiBwb2ludHM9Ii05MzYuNiw1MzguOCAtOTQxLDU0My4yIC05NDUuNCw1MzguOCAiLz4NCjwvc3ZnPg0K);\r\n    height: 16px;\r\n    width: 16px;\r\n    display: inline-block;\r\n    vertical-align: bottom;\r\n    transition: transform .3s ease;\r\n    transform: rotate(0);\r\n}\r\n\r\n.plugin-input-group .button-collapse.collapsed {\r\n    transition: transform .3s ease;\r\n    transform: rotate(-90deg);\r\n}\r\n\r\n.plugin-input-group h2 {\r\n    font-size: 14px;\r\n}\r\n\r\n.plugin-input-group .plugin-input-group h2 {\r\n    margin-left: 16px;\r\n}\r\n\r\n.plugin-inputs {\r\n    height: auto;\r\n    overflow: hidden;\r\n    transition: height 300ms cubic-bezier(0.47, 0, 0.745, 0.715);\r\n}\r\n\r\n.plugin-inputs.collapsed {\r\n    height: 0px;\r\n}\r\n\r\n.file-input {\r\n\r\n}\r\n\r\n.file-input::-webkit-file-upload-button {\r\n\tcolor: white;\r\n\tbackground: #7289DA;\r\n\toutline: 0;\r\n\tborder: 0;\r\n\tpadding: 10px;\r\n\tvertical-align: top;\r\n\tmargin-top: -10px;\r\n\tmargin-left: -10px;\r\n\tborder-radius: 3px 0 0 3px;\r\n\tfont-size: 14px;\r\n    font-weight: 500;\r\n\tfont-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;\r\n\tcursor: pointer;\r\n}\r\n"
+module.exports = ".plugin-input-group {\n    margin-top: 5px;\n}\n\n.plugin-input-group .button-collapse {\n    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FscXVlXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSItOTUwIDUzMiAxOCAxOCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAtOTUwIDUzMiAxOCAxODsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6bm9uZTt9DQoJLnN0MXtmaWxsOm5vbmU7c3Ryb2tlOiNGRkZGRkY7c3Ryb2tlLXdpZHRoOjEuNTtzdHJva2UtbWl0ZXJsaW1pdDoxMDt9DQo8L3N0eWxlPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTS05MzIsNTMydjE4aC0xOHYtMThILTkzMnoiLz4NCjxwb2x5bGluZSBjbGFzcz0ic3QxIiBwb2ludHM9Ii05MzYuNiw1MzguOCAtOTQxLDU0My4yIC05NDUuNCw1MzguOCAiLz4NCjwvc3ZnPg0K);\n    height: 16px;\n    width: 16px;\n    display: inline-block;\n    vertical-align: bottom;\n    transition: transform .3s ease;\n    transform: rotate(0);\n}\n\n.plugin-input-group .button-collapse.collapsed {\n    transition: transform .3s ease;\n    transform: rotate(-90deg);\n}\n\n.plugin-input-group h2 {\n    font-size: 14px;\n}\n\n.plugin-input-group .plugin-input-group h2 {\n    margin-left: 16px;\n}\n\n.plugin-inputs {\n    height: auto;\n    overflow: hidden;\n    transition: height 300ms cubic-bezier(0.47, 0, 0.745, 0.715);\n}\n\n.plugin-inputs.collapsed {\n    height: 0px;\n}\n\n.file-input {\n\n}\n\n.file-input::-webkit-file-upload-button {\n\tcolor: white;\n\tbackground: #7289DA;\n\toutline: 0;\n\tborder: 0;\n\tpadding: 10px;\n\tvertical-align: top;\n\tmargin-top: -10px;\n\tmargin-left: -10px;\n\tborder-radius: 3px 0 0 3px;\n\tfont-size: 14px;\n    font-weight: 500;\n\tfont-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;\n\tcursor: pointer;\n}\n"
 
 /***/ }),
 
@@ -6493,7 +6486,7 @@ module.exports = ".plugin-input-group {\r\n    margin-top: 5px;\r\n}\r\n\r\n.plu
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".toasts {\r\n    position: fixed;\r\n    display: flex;\r\n    top: 0;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    justify-content: flex-end;\r\n    pointer-events: none;\r\n    z-index: 4000;\r\n}\r\n\r\n@keyframes toast-up {\r\n    from {\r\n        transform: translateY(0);\r\n        opacity: 0;\r\n    }\r\n}\r\n\r\n.toast {\r\n    animation: toast-up 300ms ease;\r\n    transform: translateY(-10px);\r\n    background: #36393F;\r\n    padding: 10px;\r\n    border-radius: 5px;\r\n    box-shadow: 0 0 0 1px rgba(32,34,37,.6), 0 2px 10px 0 rgba(0,0,0,.2);\r\n    font-weight: 500;\r\n    color: #fff;\r\n    user-select: text;\r\n    font-size: 14px;\r\n    opacity: 1;\r\n    margin-top: 10px;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n}\r\n\r\n@keyframes toast-down {\r\n    to {\r\n        transform: translateY(0px);\r\n        opacity: 0;\r\n    }\r\n}\r\n\r\n.toast.closing {\r\n    animation: toast-down 200ms ease;\r\n    animation-fill-mode: forwards;\r\n    opacity: 1;\r\n    transform: translateY(-10px);\r\n}\r\n\r\n.toast.toast-info {\r\n    background-color: #4a90e2;\r\n}\r\n\r\n.toast.toast-success {\r\n    background-color: #43b581;\r\n}\r\n\r\n.toast.toast-danger,\r\n.toast.toast-error {\r\n    background-color: #f04747;\r\n}\r\n\r\n.toast.toast-warning,\r\n.toast.toast-warn {\r\n    background-color: #FFA600;\r\n}\r\n\r\n.toast-icon {\r\n    margin-right: 5px;\r\n    fill: white;\r\n    border-radius: 50%;\r\n    overflow: hidden;\r\n    height: 20px;\r\n    width: 20px;\r\n}\r\n\r\n.toast-text {\r\n    line-height: 20px;\r\n}"
+module.exports = ".toasts {\n    position: fixed;\n    display: flex;\n    top: 0;\n    flex-direction: column;\n    align-items: center;\n    justify-content: flex-end;\n    pointer-events: none;\n    z-index: 4000;\n}\n\n@keyframes toast-up {\n    from {\n        transform: translateY(0);\n        opacity: 0;\n    }\n}\n\n.toast {\n    animation: toast-up 300ms ease;\n    transform: translateY(-10px);\n    background: #36393F;\n    padding: 10px;\n    border-radius: 5px;\n    box-shadow: 0 0 0 1px rgba(32,34,37,.6), 0 2px 10px 0 rgba(0,0,0,.2);\n    font-weight: 500;\n    color: #fff;\n    user-select: text;\n    font-size: 14px;\n    opacity: 1;\n    margin-top: 10px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n\n@keyframes toast-down {\n    to {\n        transform: translateY(0px);\n        opacity: 0;\n    }\n}\n\n.toast.closing {\n    animation: toast-down 200ms ease;\n    animation-fill-mode: forwards;\n    opacity: 1;\n    transform: translateY(-10px);\n}\n\n.toast.toast-info {\n    background-color: #4a90e2;\n}\n\n.toast.toast-success {\n    background-color: #43b581;\n}\n\n.toast.toast-danger,\n.toast.toast-error {\n    background-color: #f04747;\n}\n\n.toast.toast-warning,\n.toast.toast-warn {\n    background-color: #FFA600;\n}\n\n.toast-icon {\n    margin-right: 5px;\n    fill: white;\n    border-radius: 50%;\n    overflow: hidden;\n    height: 20px;\n    width: 20px;\n}\n\n.toast-text {\n    line-height: 20px;\n}"
 
 /***/ }),
 
@@ -6504,7 +6497,7 @@ module.exports = ".toasts {\r\n    position: fixed;\r\n    display: flex;\r\n   
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "#pluginNotice {\r\n    -webkit-app-region: drag;\r\n    border-radius: 0;\r\n    overflow: hidden;\r\n    height: 36px;\r\n    animation: open-updates 400ms ease;\r\n}\r\n\r\n@keyframes open-updates {\r\n    from { height: 0; }\r\n}\r\n\r\n#pluginNotice.closing {\r\n    transition: height 400ms ease;\r\n    height: 0;\r\n}\r\n\r\n#outdatedPlugins {\r\n    font-weight: 700;\r\n}\r\n\r\n#outdatedPlugins>span {\r\n    -webkit-app-region: no-drag;\r\n    color: #fff;\r\n    cursor: pointer;\r\n}\r\n\r\n#outdatedPlugins>span:hover {\r\n    text-decoration: underline;\r\n}"
+module.exports = "#pluginNotice {\n    -webkit-app-region: drag;\n    border-radius: 0;\n    overflow: hidden;\n    height: 36px;\n    animation: open-updates 400ms ease;\n}\n\n@keyframes open-updates {\n    from { height: 0; }\n}\n\n#pluginNotice.closing {\n    transition: height 400ms ease;\n    height: 0;\n}\n\n#outdatedPlugins {\n    font-weight: 700;\n}\n\n#outdatedPlugins>span {\n    -webkit-app-region: no-drag;\n    color: #fff;\n    cursor: pointer;\n}\n\n#outdatedPlugins>span:hover {\n    text-decoration: underline;\n}"
 
 /***/ }),
 
@@ -6825,6 +6818,194 @@ class ToggleItem extends MenuItem {
 
 /***/ }),
 
+/***/ "./src/ui/emulatedtooltip.js":
+/*!***********************************!*\
+  !*** ./src/ui/emulatedtooltip.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EmulatedTooltip; });
+/* harmony import */ var modules__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! modules */ "./src/modules/modules.js");
+/* harmony import */ var _structs_screen__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../structs/screen */ "./src/structs/screen.js");
+/** 
+ * Tooltip that automatically show and hide themselves on mouseenter and mouseleave events.
+ * Will also remove themselves if the node to watch is removed from DOM through
+ * a MutationObserver.
+ * 
+ * Note this is not using Discord's internals but normal DOM manipulation and emulates 
+ * Discord's own tooltips as closely as possible.
+ * 
+ * @module EmulatedTooltip
+ * @version 0.0.1
+ */
+
+
+
+
+const getClass = function(sideOrColor) {
+    const upperCase = sideOrColor[0].toUpperCase() + sideOrColor.slice(1);
+    const tooltipClass = modules__WEBPACK_IMPORTED_MODULE_0__["DiscordClasses"].Tooltips[`tooltip${upperCase}`];
+    if (tooltipClass) return tooltipClass;
+    return null;
+};
+
+const classExists = function(sideOrColor) {
+    return getClass(sideOrColor) ? true : false;
+};
+
+const toPx = function(value) {
+    return `${value}px`;
+};
+
+/* <div class="layer-v9HyYc da-layer" style="left: 234.5px; bottom: 51px;">
+    <div class="tooltip-2QfLtc da-tooltip tooltipTop-XDDSxx tooltipBlack-PPG47z">
+        <div class="tooltipPointer-3ZfirK da-tooltipPointer"></div>
+        User Settings
+    </div>
+</div> */
+
+class EmulatedTooltip {
+	/**
+	 * 
+	 * @constructor
+	 * @param {(HTMLElement|jQuery)} node - DOM node to monitor and show the tooltip on
+	 * @param {string} tip - string to show in the tooltip
+	 * @param {object} options - additional options for the tooltip
+	 * @param {string} [options.style=black] - correlates to the discord styling/colors (black, brand, green, grey, red, yellow)
+	 * @param {string} [options.side=top] - can be any of top, right, bottom, left
+	 * @param {boolean} [options.preventFlip=false] - prevents moving the tooltip to the opposite side if it is too big or goes offscreen
+     * @param {boolean} [options.disabled=false] - whether the tooltip should be disabled from showing on hover
+	 */
+	constructor(node, text, options = {}) {
+		const {style = "black", side = "top", preventFlip = false, disabled = false} = options;
+		this.node = node instanceof jQuery ? node[0] : node;
+        this.label = text;
+        this.style = style.toLowerCase();
+		this.side = side.toLowerCase();
+        this.preventFlip = preventFlip;
+        this.disabled = disabled;
+
+        if (!classExists(this.side)) return modules__WEBPACK_IMPORTED_MODULE_0__["Logger"].err("EmulatedTooltip", `Side ${this.side} does not exist.`);
+        if (!classExists(this.style)) return modules__WEBPACK_IMPORTED_MODULE_0__["Logger"].err("EmulatedTooltip", `Style ${this.style} does not exist.`);
+
+        this.element = modules__WEBPACK_IMPORTED_MODULE_0__["DOMTools"].createElement(`<div class="${modules__WEBPACK_IMPORTED_MODULE_0__["DiscordClasses"].TooltipLayers.layer}">`);
+        this.tooltipElement = modules__WEBPACK_IMPORTED_MODULE_0__["DOMTools"].createElement(`<div class="${modules__WEBPACK_IMPORTED_MODULE_0__["DiscordClasses"].Tooltips.tooltip} ${getClass(this.style)}"><div class="${modules__WEBPACK_IMPORTED_MODULE_0__["DiscordClasses"].Tooltips.tooltipPointer}"></div>${this.label}</div>`);
+        this.labelElement = this.tooltipElement.childNodes[1];
+        this.element.append(this.tooltipElement);
+        
+
+		this.node.addEventListener("mouseenter", () => {
+            if (this.disabled) return;
+            this.show();
+			
+			const observer = new MutationObserver((mutations) => {
+				mutations.forEach((mutation) => {
+					const nodes = Array.from(mutation.removedNodes);
+					const directMatch = nodes.indexOf(this.node) > -1;
+					const parentMatch = nodes.some(parent => parent.contains(this.node));
+					if (directMatch || parentMatch) {
+						this.hide();
+						observer.disconnect();
+					}
+				});
+			});
+
+			observer.observe(document.body, {subtree: true, childList: true});
+		});
+
+		this.node.addEventListener("mouseleave", () => {
+			this.hide();
+		});
+    }
+    
+    /** Container where the tooltip will be appended. */
+    get container() { return document.querySelector(modules__WEBPACK_IMPORTED_MODULE_0__["DiscordSelectors"].TooltipLayers.layerContainer); }
+    /** Boolean representing if the tooltip will fit on screen above the element */
+    get canShowAbove() { return this.node.offset().top - this.element.outerHeight() >= 0; }
+    /** Boolean representing if the tooltip will fit on screen below the element */
+    get canShowBelow() { return this.node.offset().top + this.node.outerHeight() + this.element.outerHeight() <= _structs_screen__WEBPACK_IMPORTED_MODULE_1__["default"].height; }
+    /** Boolean representing if the tooltip will fit on screen to the left of the element */
+    get canShowLeft() { return this.node.offset().left - this.element.outerWidth() >= 0; }
+    /** Boolean representing if the tooltip will fit on screen to the right of the element */
+	get canShowRight() { return this.node.offset().left + this.node.outerWidth() + this.element.outerWidth() <= _structs_screen__WEBPACK_IMPORTED_MODULE_1__["default"].width; }
+
+    /** Hides the tooltip. Automatically called on mouseleave. */
+	hide() {
+        this.element.remove();
+        this.tooltipElement.className = this._className;
+	}
+
+    /** Shows the tooltip. Automatically called on mouseenter. Will attempt to flip if position was wrong. */
+	show() {
+        this.tooltipElement.className = `${modules__WEBPACK_IMPORTED_MODULE_0__["DiscordClasses"].Tooltips.tooltip} ${getClass(this.style)}`;
+        this.labelElement.textContent = this.label;
+		this.element.appendTo(this.container);
+
+		if (this.side == "top") {
+			if (this.canShowAbove || (!this.canShowAbove && this.preventFlip)) this.showAbove();
+			else this.showBelow();
+		}
+
+		if (this.side == "bottom") {
+			if (this.canShowBelow || (!this.canShowBelow && this.preventFlip)) this.showBelow();
+			else this.showAbove();
+		}
+
+		if (this.side == "left") {
+			if (this.canShowLeft || (!this.canShowLeft && this.preventFlip)) this.showLeft();
+			else this.showRight();
+		}
+
+		if (this.side == "right") {
+			if (this.canShowRight || (!this.canShowRight && this.preventFlip)) this.showRight();
+			else this.showLeft();
+		}
+	}
+
+    /** Force showing the tooltip above the node. */
+	showAbove() {
+		this.tooltipElement.addClass(getClass("top"));
+		this.element.css("top", toPx(this.node.offset().top - this.element.outerHeight() - 10));
+		this.centerHorizontally();
+	}
+
+    /** Force showing the tooltip below the node. */
+	showBelow() {
+		this.tooltipElement.addClass(getClass("bottom"));
+		this.element.css("top", toPx(this.node.offset().top + this.node.outerHeight() + 10));
+		this.centerHorizontally();
+	}
+
+    /** Force showing the tooltip to the left of the node. */
+	showLeft() {
+		this.tooltipElement.addClass(getClass("left"));
+		this.element.css("left", toPx(this.node.offset().left - this.element.outerWidth() - 10));
+		this.centerVertically();
+	}
+
+    /** Force showing the tooltip to the right of the node. */
+	showRight() {
+		this.tooltipElement.addClass(getClass("right"));
+		this.element.css("left", toPx(this.node.offset().left + this.node.outerWidth() + 10));
+		this.centerVertically();
+	}
+
+	centerHorizontally() {
+		const nodecenter = this.node.offset().left + (this.node.outerWidth() / 2);
+		this.element.css("left", toPx(nodecenter - (this.element.outerWidth() / 2)));
+	}
+
+	centerVertically() {
+		const nodecenter = this.node.offset().top + (this.node.outerHeight() / 2);
+		this.element.css("top", toPx(nodecenter - (this.element.outerHeight() / 2)));
+	}
+}
+
+/***/ }),
+
 /***/ "./src/ui/icons.js":
 /*!*************************!*\
   !*** ./src/ui/icons.js ***!
@@ -7137,7 +7318,7 @@ class Popouts {
             toggleClose: true,
             render: (props) => {
                 return modules__WEBPACK_IMPORTED_MODULE_1__["DiscordModules"].React.createElement(modules__WEBPACK_IMPORTED_MODULE_1__["DiscordModules"].UserPopout, Object.assign({}, props, {
-                    user: user,
+                    userId: user.id,
                     guildId: guild,
                     channelId: channel
                 }));
@@ -8167,7 +8348,7 @@ class Tooltip {
 /*!**********************!*\
   !*** ./src/ui/ui.js ***!
   \**********************/
-/*! exports provided: Tooltip, Toasts, Popouts, Modals, Settings, ContextMenu, Icons */
+/*! exports provided: Tooltip, EmulatedTooltip, Toasts, Popouts, Modals, Settings, ContextMenu, Icons */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8181,14 +8362,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tooltip__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tooltip */ "./src/ui/tooltip.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Tooltip", function() { return _tooltip__WEBPACK_IMPORTED_MODULE_3__["default"]; });
 
-/* harmony import */ var _toasts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./toasts */ "./src/ui/toasts.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Toasts", function() { return _toasts__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+/* harmony import */ var _emulatedtooltip__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./emulatedtooltip */ "./src/ui/emulatedtooltip.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EmulatedTooltip", function() { return _emulatedtooltip__WEBPACK_IMPORTED_MODULE_4__["default"]; });
 
-/* harmony import */ var _popouts__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./popouts */ "./src/ui/popouts.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Popouts", function() { return _popouts__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+/* harmony import */ var _toasts__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./toasts */ "./src/ui/toasts.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Toasts", function() { return _toasts__WEBPACK_IMPORTED_MODULE_5__["default"]; });
 
-/* harmony import */ var _modals__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modals */ "./src/ui/modals.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Modals", function() { return _modals__WEBPACK_IMPORTED_MODULE_6__["default"]; });
+/* harmony import */ var _popouts__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./popouts */ "./src/ui/popouts.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Popouts", function() { return _popouts__WEBPACK_IMPORTED_MODULE_6__["default"]; });
+
+/* harmony import */ var _modals__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modals */ "./src/ui/modals.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Modals", function() { return _modals__WEBPACK_IMPORTED_MODULE_7__["default"]; });
+
 
 
 

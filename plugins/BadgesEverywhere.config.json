@@ -1,9 +1,10 @@
 {
 	"settings": {
+		"showInPopout": true,
 		"showInChat": true,
 		"showInMemberList": true,
-		"showInPopout": true,
-		"useColoredVersion": true
+		"useColoredVersion": true,
+		"showNitroDate": true
 	},
 	"badges": {
 		"1": true,
@@ -14,6 +15,13 @@
 		"128": true,
 		"256": true,
 		"512": true,
+		"1024": true,
 		"2048": true
+	},
+	"changelog": {
+		"currentversion": "1.3.4"
+	},
+	"indicators": {
+		"CURRENT_GUILD_BOOST": true
 	}
 }

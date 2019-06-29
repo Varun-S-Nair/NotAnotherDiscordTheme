@@ -1,4 +1,4 @@
-//META{"name":"Citador"}*//
+//META{"name":"Citador","source":"https://github.com/nirewen/Citador/blob/master/Citador.plugin.js","website":"https://github.com/nirewen"}*//
 
 /* global $, Element */
 
@@ -27,17 +27,22 @@ var Citador = (() => {
   
   getName         () { return "Citador";            }
   getDescription  () { return this.local.description}
-  getVersion      () { return "1.7.18";             }
+  getVersion      () { return "1.7.20";             }
   getAuthor       () { return "Nirewen";            }
   unload          () { this.deleteEverything();     }
   stop            () { this.deleteEverything();     }
-  load            () {                              }
+  load            () {
+		let libraryScript=document.getElementById('ZLibraryScript');
+		if(!window.ZLibrary&&!libraryScript){
+			libraryScript=document.createElement('script');
+			libraryScript.setAttribute('type','text/javascript');
+			libraryScript.addEventListener("error",function(){if(typeof window.ZLibrary==="undefined"){window.BdApi.alert("Library Missing",`The library plugin needed for ${this.getName()} is missing and could not be loaded.<br /><br /><a href="https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js" target="_blank">Click here to download the library!</a>`);}}.bind(this));
+			libraryScript.setAttribute('src','https://rauenzi.github.io/BDPluginLibrary/release/ZLibrary.js');
+			libraryScript.setAttribute('id','ZLibraryScript');
+			document.head.appendChild(libraryScript);
+		}
+  }
   async start     () {
-    let libraryScript = this.inject('script', {
-      type: 'text/javascript',
-      id: 'zeresLibraryScript',
-      src: 'https://rauenzi.github.io/BDPluginLibrary/release/ZLibrary.js'
-    });
     this.inject('link', {
       type: 'text/css',
       id: 'citador-css',
@@ -45,13 +50,11 @@ var Citador = (() => {
       href: 'https://rawcdn.githack.com/nirewen/Citador/master/Citador.styles.css?v=2'
     });
 
-    if (!this.strings) 
-      this.strings = await this.downloadJSON("https://raw.githubusercontent.com/nirewen/Citador/master/Citador.locales.json");
+    if(!this.strings)this.strings=await this.downloadJSON("https://raw.githubusercontent.com/nirewen/Citador/master/Citador.locales.json");
 
-    if (typeof window.ZLibrary !== "undefined") 
-      this.initialize();
-    else 
-      libraryScript.addEventListener("load", () => this.initialize());
+	let libraryScript=document.getElementById('ZLibraryScript');
+    if(typeof window.ZLibrary!=="undefined")this.initialize();
+    else libraryScript.addEventListener("load",()=>this.initialize());
   }
   
   initialize() {
@@ -189,7 +192,7 @@ var Citador = (() => {
             }
           })
           .on('mouseleave',function() {
-            if ($(this).find('.citar-btn').length == 1)
+            if ($(this).find('.citar-btn').length >= 1)
               $(this).find('.citar-btn').empty().remove();
           });
       }
@@ -529,8 +532,10 @@ var Citador = (() => {
     this.cancel();
   }
   
-  get guilds () {
-    return ReactTools.getOwnerInstance($('.' + BdApi.findModuleByProps('unreadMentionBar', 'unreadMentionsBar', 'wrapper').wrapper.replace(/ /g, '.'))[0]).props.guilds.map(o => o.guild);
+  get guilds () { /*unreadMentionBar does not lead to the guilds wrapper anymore. Added a check to see if it grabbed the right module, and if it can't then use a manually written backup.*/
+	let grabByProps=BdApi.findModuleByProps('wrapper','unreadMentionsBar','unreadMentionsIndicatorBottom','unreadMentionsIndicatorTop'),manualBackup='wrapper-1Rf91z';
+	if(grabByProps)return ReactTools.getOwnerInstance($(`.${grabByProps.wrapper.replace(/ /g, '.')}`)[0]).props.guilds.map(o => o.guild);
+	else if(document.getElementsByClassName(manualBackup)[0])return ReactTools.getOwnerInstance(document.getElementsByClassName(manualBackup)[0]).props.guilds.map(o => o.guild);
   }
   
   get defaultSettings() {

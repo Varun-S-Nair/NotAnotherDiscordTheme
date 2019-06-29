@@ -2,6 +2,8 @@
 	"settings": {
 		"showText": true,
 		"showVoice": true,
+		"showNews": true,
+		"showStore": true,
 		"showCategory": true,
 		"showForNormal": true,
 		"showAllowedRoles": true,
@@ -25,12 +27,25 @@
 		"476978785514946570": true,
 		"570979472350642176": true,
 		"486217652487061504": true,
-		"536785167000403989": true
+		"536785167000403989": true,
+		"408718009428082724": true,
+		"396796554754916353": true,
+		"483822520651218957": true,
+		"258359881818439692": true,
+		"582193812630405120": true,
+		"577310618915176469": true,
+		"584029174860218370": true,
+		"583622260674527254": true,
+		"584787534819885058": true,
+		"506201404075933718": true,
+		"435927929499942923": true,
+		"590806733924859943": true,
+		"502682347309891584": true
 	},
 	"amounts": {
 		"hoverDelay": 0
 	},
 	"changelog": {
-		"currentversion": "2.4.9"
+		"currentversion": "2.5.3"
 	}
 }

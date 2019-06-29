@@ -3,7 +3,7 @@
 class LastMessageDate {
 	getName () {return "LastMessageDate";}
 
-	getVersion () {return "1.0.4";}
+	getVersion () {return "1.0.6";}
 
 	getAuthor () {return "DevilBro";}
 
@@ -11,7 +11,7 @@ class LastMessageDate {
 
 	initConstructor () {
 		this.changelog = {
-			"fixed":[["New Select Classes","The Dropdown-Select element got new classes on canary, this update will prevent stable from breaking once the class change is pushed to stable"]]
+			"fixed":[["Showing at top","Fixed issue where dates would be listed at the top in the profile the first time a profile was opened or when a custom status is set"]]
 		};
 		
 		this.labels = {};
@@ -107,15 +107,30 @@ class LastMessageDate {
 	start () {
 		if (!global.BDFDB) global.BDFDB = {myPlugins:{}};
 		if (global.BDFDB && global.BDFDB.myPlugins && typeof global.BDFDB.myPlugins == "object") global.BDFDB.myPlugins[this.getName()] = this;
-		var libraryScript = document.querySelector('head script[src="https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js"]');
-		if (!libraryScript || performance.now() - libraryScript.getAttribute("date") > 600000) {
+		var libraryScript = document.querySelector('head script#BDFDBLibraryScript');
+		if (!libraryScript || (performance.now() - libraryScript.getAttribute("date")) > 600000) {
 			if (libraryScript) libraryScript.remove();
 			libraryScript = document.createElement("script");
+			libraryScript.setAttribute("id", "BDFDBLibraryScript");
 			libraryScript.setAttribute("type", "text/javascript");
 			libraryScript.setAttribute("src", "https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js");
 			libraryScript.setAttribute("date", performance.now());
-			libraryScript.addEventListener("load", () => {if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) this.initialize();});
+			libraryScript.addEventListener("load", () => {this.initialize();});
 			document.head.appendChild(libraryScript);
+			this.libLoadTimeout = setTimeout(() => {
+				libraryScript.remove();
+				require("request")("https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js", (error, response, body) => {
+					if (body) {
+						libraryScript = document.createElement("script");
+						libraryScript.setAttribute("id", "BDFDBLibraryScript");
+						libraryScript.setAttribute("type", "text/javascript");
+						libraryScript.setAttribute("date", performance.now());
+						libraryScript.innerText = body;
+						document.head.appendChild(libraryScript);
+					}
+					this.initialize();
+				});
+			}, 15000);
 		}
 		else if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) this.initialize();
 		this.startTimeout = setTimeout(() => {this.initialize();}, 30000);
@@ -204,7 +219,7 @@ class LastMessageDate {
 	}
 
 	addLastMessageDate (info, container, popout) {
-		if (!info || info.isLocalBot() || !container || container.querySelector(".lastMessageDate")) return;
+		if (!info || info.discriminator == "0000" || !container || container.querySelector(".lastMessageDate")) return;
 		let guildid = this.CurrentGuildStore.getGuildId();
 		let isguild = !!guildid;
 		guildid = guildid || this.CurrentChannelStore.getChannelId();
@@ -212,31 +227,35 @@ class LastMessageDate {
 			if (!this.loadedusers[guildid]) this.loadedusers[guildid] = {};
 			let addTimestamp = (timestamp) => {
 				if (document.contains(container)) {
+					BDFDB.removeEles(container.querySelectorAll(".lastMessageDate"));
+					if (BDFDB.isObject(container.LastMessageDateObserver)) container.LastMessageDateObserver.disconnect();
 					let choice = BDFDB.getData("lastMessageDateLang", this, "choices");
 					let nametag = container.querySelector(BDFDB.dotCN.nametag);
-					let joinedAtDate = container.querySelector(".joinedAtDate");
-					container.insertBefore(BDFDB.htmlToElement(`<div class="lastMessageDate BDFDB-textscrollwrapper ${BDFDB.disCN.textrow}" style="max-width: ${BDFDB.getRects(BDFDB.getParentEle(popout ? BDFDB.dotCN.userpopoutheader : BDFDB.dotCN.userprofileheaderinfo, container)).width - 20}px !important;"><div class="BDFDB-textscroll">${this.labels.lastmessage_text.replace("{{time}}", timestamp == "never" ? "---" : this.getTimestamp(this.languages[choice].id, timestamp))}</div></div>`), joinedAtDate ? joinedAtDate.nextSibling : (nametag ? nametag.nextSibling : null));
-					BDFDB.initElements(container.parentElement, this);
+					container.insertBefore(BDFDB.htmlToElement(`<div class="lastMessageDate BDFDB-textscrollwrapper ${BDFDB.disCN.textrow}" style="max-width: ${BDFDB.getRects(BDFDB.getParentEle(popout ? BDFDB.dotCN.userpopoutheader : BDFDB.dotCN.userprofileheaderinfo, container)).width - 20}px !important; order: 6 !important;"><div class="BDFDB-textscroll">${this.labels.lastmessage_text.replace("{{time}}", timestamp == "never" ? "---" : this.getTimestamp(this.languages[choice].id, timestamp))}</div></div>`), nametag ? nametag.nextSibling : null);
+					BDFDB.initElements(container, this);
 					if (popout && popout.style.transform.indexOf("translateY(-1") == -1) {
-						let arect = BDFDB.getRects(document.querySelector(BDFDB.dotCN.appmount));
-						let prect = BDFDB.getRects(popout);
+						let arect = BDFDB.getRects(document.querySelector(BDFDB.dotCN.appmount)), prect = BDFDB.getRects(popout);
 						popout.style.setProperty("top", (prect.y + prect.height > arect.height ? (arect.height - prect.height) : prect.y) + "px");
 					}
+					container.LastMessageDateObserver = new MutationObserver((changes, _) => {changes.forEach((change, i) => {change.addedNodes.forEach((node) => {
+						if (node && BDFDB.containsClass(node, BDFDB.disCN.nametag)) addTimestamp(timestamp);
+					});});});
+					container.LastMessageDateObserver.observe(container, {childList: true, subtree:true});
 				}
 			};
 			if (this.loadedusers[guildid][info.id]) addTimestamp(this.loadedusers[guildid][info.id]);
 			else this.APIModule.get((isguild ? this.DiscordConstants.Endpoints.SEARCH_GUILD(guildid) : this.DiscordConstants.Endpoints.SEARCH_CHANNEL(guildid)) + "?author_id=" + info.id).then(result => {
-				if (result && result.body && Array.isArray(result.body.messages[0])) {
+				if (result && result.body && result.body.messages && Array.isArray(result.body.messages[0])) {
 					for (let message of result.body.messages[0]) if (message.hit && message.author.id == info.id) {
-						let timestamp = new Date(message.timestamp);
-						this.loadedusers[guildid][info.id] = timestamp;
-						addTimestamp(timestamp);
+						let lastmessagedate = new Date(message.timestamp);
+						this.loadedusers[guildid][info.id] = lastmessagedate;
+						addTimestamp(lastmessagedate);
 					}
 				}
 				else {
-					let timestamp = "never";
-					this.loadedusers[guildid][info.id] = timestamp;
-					addTimestamp(timestamp);
+					let lastmessagedate = "never";
+					this.loadedusers[guildid][info.id] = lastmessagedate;
+					addTimestamp(lastmessagedate);
 				}
 			});
 		}
