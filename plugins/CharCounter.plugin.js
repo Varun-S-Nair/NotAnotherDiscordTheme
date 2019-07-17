@@ -3,7 +3,7 @@
 class CharCounter {
 	getName () {return "CharCounter";}
 
-	getVersion () {return "1.3.4";}
+	getVersion () {return "1.3.5";}
 
 	getAuthor () {return "DevilBro";}
 
@@ -11,13 +11,13 @@ class CharCounter {
 
 	initConstructor () {
 		this.changelog = {
-			"fixed":[["Context Menu","Fixed the issue where the plugin would break the copy/paste actions via the textarea contextmenu"]]
+			"fixed":[["Nickname Modal","Fixed for the nickname modal"]]
 		};
 		
 		this.patchModules = {
 			"ChannelTextArea":"componentDidMount",
 			"Note":"componentDidMount",
-			"Modal":"componentDidMount"
+			"ChangeNickname":"componentDidMount"
 		};
 
 		this.maxLenghts = {
@@ -47,8 +47,9 @@ class CharCounter {
 			#charcounter {
 				display: block;
 				position: absolute;
-				z-index: 1000;
+				z-index: 1000; 
 				pointer-events: none;
+				font-size: 15px;
 			}
 			#charcounter.normal {
 				right: 0;
@@ -87,15 +88,30 @@ class CharCounter {
 	start () {
 		if (!global.BDFDB) global.BDFDB = {myPlugins:{}};
 		if (global.BDFDB && global.BDFDB.myPlugins && typeof global.BDFDB.myPlugins == "object") global.BDFDB.myPlugins[this.getName()] = this;
-		var libraryScript = document.querySelector('head script[src="https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js"]');
-		if (!libraryScript || performance.now() - libraryScript.getAttribute("date") > 600000) {
+		var libraryScript = document.querySelector('head script#BDFDBLibraryScript');
+		if (!libraryScript || (performance.now() - libraryScript.getAttribute("date")) > 600000) {
 			if (libraryScript) libraryScript.remove();
 			libraryScript = document.createElement("script");
+			libraryScript.setAttribute("id", "BDFDBLibraryScript");
 			libraryScript.setAttribute("type", "text/javascript");
 			libraryScript.setAttribute("src", "https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js");
 			libraryScript.setAttribute("date", performance.now());
-			libraryScript.addEventListener("load", () => {if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) this.initialize();});
+			libraryScript.addEventListener("load", () => {this.initialize();});
 			document.head.appendChild(libraryScript);
+			this.libLoadTimeout = setTimeout(() => {
+				libraryScript.remove();
+				require("request")("https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js", (error, response, body) => {
+					if (body) {
+						libraryScript = document.createElement("script");
+						libraryScript.setAttribute("id", "BDFDBLibraryScript");
+						libraryScript.setAttribute("type", "text/javascript");
+						libraryScript.setAttribute("date", performance.now());
+						libraryScript.innerText = body;
+						document.head.appendChild(libraryScript);
+					}
+					this.initialize();
+				});
+			}, 15000);
 		}
 		else if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) this.initialize();
 		this.startTimeout = setTimeout(() => {this.initialize();}, 30000);
@@ -133,11 +149,9 @@ class CharCounter {
 		this.appendCounter(wrapper.firstElementChild, BDFDB.containsClass(wrapper, BDFDB.disCN.usernotepopout) ? "popout" : (BDFDB.containsClass(wrapper, BDFDB.disCN.usernoteprofile) ? "profile" : null), false);
 	}
 
-	processModal (instance, wrapper) {
-		if (instance.props && instance.props.tag == "form") {
-			let reset = wrapper.querySelector(BDFDB.dotCN.reset);
-			if (reset && BDFDB.getInnerText(reset.firstElementChild) == BDFDB.LanguageStrings.RESET_NICKNAME) this.appendCounter(wrapper.querySelector(BDFDB.dotCN.inputdefault), "nickname", false);
-		}
+	processChangeNickname (instance, wrapper) {
+		let reset = wrapper.querySelector(BDFDB.dotCN.reset);
+		if (reset && BDFDB.getInnerText(reset.firstElementChild) == BDFDB.LanguageStrings.RESET_NICKNAME) this.appendCounter(wrapper.querySelector(BDFDB.dotCN.inputdefault), "nickname", false);
 	}
 
 	appendCounter (input, type, parsing) {
@@ -155,7 +169,7 @@ class CharCounter {
 
 		BDFDB.addClass(input.parentElement.parentElement, "charcounter-added");
 		if (type == "nickname") input.setAttribute("maxlength", 32);
-		BDFDB.addEventListener(this, input, "keydown click", e => {
+		BDFDB.addEventListener(this, input, "keydown click change", e => {
 			clearTimeout(input.charcountertimeout);
 			input.charcountertimeout = setTimeout(() => {updateCounter();},100);
 		});

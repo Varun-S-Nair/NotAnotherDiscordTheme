@@ -1,0 +1,238 @@
+{
+	"changelog": {
+		"currentversion": "6.3.3"
+	},
+	"settings": {
+		"closeOtherFolders": false,
+		"closeTheFolder": false,
+		"closeAllFolders": false,
+		"forceOpenFolder": false,
+		"showCountBadge": true,
+		"addSeparators": true
+	},
+	"folders": {
+		"folder_8884885595056773": {
+			"folderID": "folder_8884885595056773",
+			"folderName": "School CS",
+			"position": 11,
+			"iconID": "0",
+			"icons": {
+				"openicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAAB10lEQVR4Xu3a0XGDMBCEYbkCqnAXaSaVpZl0kSqowBkemFEUQLdCknXw53kZyOc9GYQfgT+zwMOcJBjAEkoAFliCgBClWWAJAkKUZoElCAhRmgWWICBEaRZYgoAQPd2s+Xt6Cef7F50+5tPXcOb8yrHFF3oWKb1ID2hFWLWhVrjRwWSsVlAewMASFi0Jq3WrRm8XWN6bJVx/UbT0i2TIZhUJiAeVgN0Wa7FVwW6NpYKBJTxugQWWfbVX1i2aRbPszdpLbjXu9s3KscZoYOW0ovsxsMAyCAiRdRS7NuvzOQmX+L7o18/85+TdsbxCxY9E3ZoFlnFSPEN1bxZYxlYtMc9YXW9KPUOl+13NF3jPWOnzYVMsz1Bbu6hghRDSm9C97eZmWFdr1QIIVvJoc/RWHKwNrL2t5iZYVxzBZmPoGevoBUb1ZnmGyr10BSt6bMu9FgPrXVieRzDXquoLPFhRTY9+JukZKrewrwTV1izPWJYRrDqGYCW7oXtjeAeoqs0SdpmHilpHUMZaDuj1W/geogpUEdaVwLpgXQFMhSpuVjwinsayBCj+X6X7rB7ryMjnAEv4dMACSxAQojQLLEFAiNIssAQBIUqzwBIEhCjNAksQEKI0S8D6BRrTDFt8FSAUAAAAAElFTkSuQmCC",
+				"closedicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAABg0lEQVR4Xu3awRGCQBBEUYmAKMzCZIzMZMzCKIhAiwMXLCj+DAiD33Mjy7N3kWKbi5/FAs3ipMGLWKAEYokFBEDUZokFBEDUZokFBEDUZokFBEDUZokFBEA03azu2b7B+b6i7a1LjyFzfnJseKBZpPEgK6CFsNaGGuCODoaxtoKqACYWWLQQ1tatOnq7xKreLDD+UDR6Izlks0IC8KAI2N9i9bYU7K+xKJhY4HErjXW/tnC12C/+eHWpZ9MUViWoQWkMRtYtsX41DW3WzJIyftwRS6xJAdcs16zp6eHdEPx1E0ssIACiNkssIACiNkssIACiNkssIACiNkssIACiNkssIACiNkssIACiNkssIACiNkssIACiNkssIACiNqsCVj/GSm+ld91FI9ZMpX+1tRvMqnR0sy1H/cjOBEag+mtHex2Gn/EMYBQqjFW9YRGoFFZ6sSj4BaFpWPA6VxmyWIBRLLGAAIjaLLGAAIjaLLGAAIjaLLGAAIjaLLGAAIjaLID1AYYyIFs0THfRAAAAAElFTkSuQmCC"
+			},
+			"copyTooltipColor": false,
+			"color1": [
+				241,
+				196,
+				15
+			],
+			"color2": [
+				82,
+				233,
+				30
+			],
+			"color3": null,
+			"color4": null,
+			"servers": [
+				"408718009428082724",
+				"506201404075933718",
+				"467094234994835469",
+				"494218196308721674"
+			],
+			"isOpen": false
+		},
+		"folder_7656363957563062": {
+			"folderID": "folder_7656363957563062",
+			"folderName": "College",
+			"position": 7,
+			"iconID": "4",
+			"icons": {
+				"openicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAAB3klEQVR4Xu2bPU7EMBBGZ0tOgGip6aCh4Q4chlNwGI6ARLPN0lFT0HAESlAgWaKV154vsrXx6G39KXKe3zj+243xcxPYuJMEDViCBMAClkBAiGIWsAQCQhSzgCUQEKKYBSyBgBDFLGAJBIQoZtWGtd29fgvPdEVvb66766hig1uAmmj2BgxYrjr4C50U1tCAnuwCVk9m9WTXyc0ClqD2GqLecXMVZvUCDFhjT3nsAlYrWJcP92uomCZtOH/+KIpTDMyXO8Aq9BOw/gFh1siCMhRGN2CtHdb745PQxD6i0xys+pgFrFGA0tQhIqj5Qr+qWcCaHVZgVqVJaXSr5D34nFnAMjPvcgdYTlhRQR1ueVf5GkaFdbghCKzMB646rKhWpU6dlpj1YmZ3U4dEhZXak18C683MroCVqN/E1OHTzC6GaFSrjh38LjHry8zOgOUza5+KataxM8QlZv3Cigoqd/cCWIlqwixhB7sqrMglWL0MI8PKXRCRxizB5G6jwBK6DljAEggIUcxywird/mOAn4EEltOq3PxqekTRrCHY8s9Owrs0jZascp0bNm1hZw93mdXZOzVrLrAEtMAClkBAiGIWsAQCQhSzgCUQEKKYBSyBgBDFLGAJBIQoZgmwfgC4XA5bc7uZNQAAAABJRU5ErkJggg==",
+				"closedicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAABwUlEQVR4Xu3bwU3DMACF4bhiB64IxAJNIgSswIVhmIJhOHHmyAU2QJVgkBoFBYFA1P5F3DrV3/NT7Hx+cdJUDY2fbIGQnTTYiAVKIJZYQABEbZZYQABEbZZYQABEbZZYQABEbZZYQABEbdbUWI9PzxEcMyu6XoSjy+XyNStcSSjZrBJQn+d+3rXJ8Stx+phGcrIlsRZNvDrruvuaQDbNZadYw8Tm1C6xQK13jjWndlWDFWMMIYTJ77qgOMloFVjJWRYO5O6bYo0LcRDXJ33fr6q+GxYuTfbhcx6SbdbIGUNzetG2L5M16/jmOnul5hY8fHhLFicZ+P4EL1aiAmJ9Adms0WIrl+Hq9m5u29Ov+Q7bS3GsfYAir4v+dRmK9aOkmzZ4scT6cw/2Mhxpcr5MiyUWf5qxWcBMLLGAAIjaLLGAAIjaLLGAAIjaLLGAAIjaLLGAAIjaLLGAAIgWbdY+vSUdTCfHAgs1u6hYYMnEEgsIgKjNEgsIgKjNEgsIgKjN2jbWMF7J/++A8ykWzWnVMHjyF+liM5zhgcUCiyaWWEAARG2WWEAARG2WWEAARG2WWEAARG2WWEAARG2WWEAARN8B8cgXWzOokf4AAAAASUVORK5CYII="
+			},
+			"copyTooltipColor": false,
+			"color1": [
+				199,
+				204,
+				205
+			],
+			"color2": [
+				233,
+				65,
+				30
+			],
+			"color3": null,
+			"color4": null,
+			"servers": [
+				"476978785514946570",
+				"258359881818439692",
+				"502682347309891584",
+				"523394620973907968",
+				"576436381945954325",
+				"600558776860278807",
+				"371821465575620628"
+			],
+			"isOpen": true
+		},
+		"folder_2613322871886919": {
+			"folderID": "folder_2613322871886919",
+			"folderName": "Hackathons",
+			"position": 12,
+			"iconID": "1",
+			"icons": {
+				"openicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAAB3ElEQVR4Xu3aMXLDIBCFYbtO4SLXSZ1Dp/Z1UrhInYxmrAxmJLEPLSDE73ot0Oe3GGm4XviYBa7mSgovYAkhAAssQUAoJVlgCQJCKckCSxAQSkkWWIKAUEqywBIEhNKsZD3ut19hjP/S28cja7ycsUp8R558LtQ8+Z7BJKy9UL2D7cL6+Xo3p/3t8/ultseEZWMpULNSDGaWLlCY82NVxZruuWew6lg9gzXBKtBV5kvuWTuHw4qTraxdYAkbZbCOgHWkfz3zgrZSOLdqkWSdCSp86gDLGLspXVWwcnb7xnsoVra0xQBrhbsKVjzIWVI1mbonC6xnVMP3WWuJASsTq8cW3Hoccm3DM6fKfc0CK/hrTa1ZYBmxzg7l2oZgRbvbrTYEy4g1ApRbG4K18IC51oZgGbFGgXJpQ7BW3vEstSFYRqyRoHa3IVgbb7XjNgQrE+ts766WGLLfZ8UX6xFLPSQCVvCrpw6JgFUba4QW3LV1CNcssBLPhmAlTg4snYMfJVUubQiW4dmw2PGVBhdObRnmKbltHRrco8uQViiXNnSZccOLFMNqeE+HGFpqw0PMuOEkwBLwwQJLEBBKSRZYgoBQSrLAEgSEUpIFliAglJIssAQBoZRkgSUICKV/CHV5W9LGFcoAAAAASUVORK5CYII=",
+				"closedicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAABi0lEQVR4Xu3bsQ6CMBSF4TI7MPg6zj60s6/jwOCs6YBRYmL/Yq80/s5HuHwcCMYyJD/FAkNx0mASC5RALLGAAIjaLLGAAIjaLLGAAIjaLLGAAIjaLLGAAIhWNWs6jzewj0d0PExV+6vZV4vv4OFroebhewZDWGuhegdbhXU97YvbvjteXrI9Nqwai0DNSkuwYukGwZqTFYqVj7lnsHCsnsF+gtXgqire5Jp7599hLZtN7l1igQdlsSKwim8SGw+GXIYbNygeT6xiqpTCsGqe4sFxNIn66ABZn8FCmtVjq979RhXrQ9NsFrgUxRILCICozRILCICozRILCICozRILCICozRILCICozRILCICozRILCICozRILCICozRILCICozRILCICozRILCICozRILCIBoeLPybD3+hf+ThSHgRG46GrLWYdMCYLhmWHmGb72/A46nWZRA5SHQAtxmU3eyYbHAiRJLLCAAojZLLCAAojZLLCAAojZLLCAAojZLLCAAojZLLCAAojYLYN0B48suW4glriMAAAAASUVORK5CYII="
+			},
+			"copyTooltipColor": false,
+			"color1": [
+				241,
+				196,
+				15
+			],
+			"color2": [
+				230,
+				126,
+				34
+			],
+			"color3": null,
+			"color4": null,
+			"servers": [
+				"494252036594860032",
+				"592835594850402351",
+				"510566117819809792",
+				"454745975052042262",
+				"441053566296391690",
+				"509406079923519488"
+			],
+			"isOpen": false
+		},
+		"folder_7400263725626026": {
+			"folderID": "folder_7400263725626026",
+			"folderName": "Standardized Tests",
+			"position": 0,
+			"iconID": "5",
+			"icons": {
+				"openicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAABvElEQVR4Xu3Z7XGDMBCEYauUtOGWknbSkl1G0gkZMsbDMCDdIgmk483vHX883jtpSLjxZxYI5iTBG1hCCcACSxAQojQLLEFAiNIssAQBIUqzwBIEhCjNAksQEKI0qybWMAyD8PrJaAihmx9M+qCloSbJXsDMWLWgegIzYdWG6gWsKawRreWRbA6rZbAmsZJHaIHAngZfFmvPnrw8ljL2YAmHClivebTsMLDA0o9LmiWYnY71cf8WPu7x0Z/H5/tNT8NqHWnrZ/l9fkV3ePEF3yvUBBgDA2ulZltgRbF6b1WqXWDRrLyTlTEU/KpjedlXoylYNEsQEKI0y4h1yKXUy84Cy9iq2HL/f/xseZ3UP1m9tAosSxtmmepjSLNm2lcZw0OeZ3lpVnUsL1Cp5V7kNARrcYLEdhZYYK1eOLIvpV6alVru2TvLC5RluYNlvLlPsawxpFkrq23rNPSCZdlXWWPoBcq6r8xYY3DZLrAijzO8YllHUGrWsl0emqVAyVhT8caW9Y6lQu3GEh8+uomb7lluvm3mFwFLAAQLLEFAiNIssAQBIUqzwBIEhCjNAksQEKI0CyxBQIjSLAHrD3qvH1sQB8o+AAAAAElFTkSuQmCC",
+				"closedicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAABbElEQVR4Xu3ayw3CMBQFUbsTKANqohyoiTboxChKLCE2eYMcYVvD+vLJySSwICcfYYEcXjpMYoEIxBILCICpZYkFBMDUssQCAmBqWWIBATC1LLGAAJha1pFYpZQCXn93mnMe5oShD9oaqkqOAhbGOgpqJLAQ1tFQo4B1hbWg9XxJdofVM9hPWOfrY/dbrvfB63kLHfvncYSeUO9ZMyB9n0SCFsaaEarCRcHESik1xTpd7k1/tfd4P4uAhcoSaz29Ym2ZWxa43sUSCwiAqWWJBQTA1LLEAgJgalliAQEwtSyxgACYWpZYQABMLUssIACmliUWEABTyxILCICpZYkFBMDUssQCAmBqWWIBATC1LLGAAJhallhAAEwt6x9Yy3vO/B+tSFWLQej/WWKtiYaxZgWLVoWx6i1ghkuSINXjRmWB++WUU7HAaRVLLCAAppYlFhAAU8sSCwiAqWWJBQTA1LLEAgJgalliAQEwfQP0MshM++aBEgAAAABJRU5ErkJggg=="
+			},
+			"copyTooltipColor": false,
+			"color1": [
+				255,
+				255,
+				255
+			],
+			"color2": [
+				32,
+				57,
+				148
+			],
+			"color3": null,
+			"color4": null,
+			"servers": [
+				"181970867549503489",
+				"343961805426655232",
+				"462026676088471553",
+				"584153862819151894",
+				"415318283387142145",
+				"486217652487061504",
+				"472853009492344842"
+			],
+			"isOpen": false
+		},
+		"folder_8786587307611184": {
+			"folderID": "folder_8786587307611184",
+			"folderName": "CTFs",
+			"position": 13,
+			"iconID": "4",
+			"icons": {
+				"openicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAAB4ElEQVR4Xu2Z0XWDMAxFxWdH6A6docN3hu7QEfpJT9NAQwJIz0duQefm+8WY6yvZwGD8wgSGcJKgAUuQAFjAEggIUcwClkBAiGIWsAQCQhSzgCUQEKKYBSyBgBDFrA6wRmHMaPR0CxWZcA9QE9DI9aPwu+cikwXWdRn+G9b3NCJz6G5N5AKRifY0C1iRVbrLRBatYdjcv0Qm2dus09h1FFi5CuijRTiEmutfmKXfXv4/XGBuwMyAdaCjQ74jbSO64riBW7PGsa5kwzC4LNwAsH41BdbUjzAr3rwowzgrA9bRYQVKX7iFw0QvvT29wQPrusDeOasoqFmqVLOAdfNsiFl+D52fcfZgVbcqtcED68c6zGp5RbNVhoWtWlRfym5YGNaCD7D2N7hcWIWtetgAW8x6M7PXaUEKw3pg0wLr3cxegLVev/dHhw8ze7446r+29o+8x02kmPVpZk/Aipk1pwqbtdqeWnrWBVZhUJuPgcBarybMEvaSPFjFSzC3DIvD2mxNUs8SND5zFFjC6gELWAIBIYpZQVi7PZwGv6QIrKBV7teuiFmLLzzChc8WdVm4gbPdcc/5AkugCyxgCQSEKGYBSyAgRDELWAIBIYpZwBIICFHMApZAQIhiFrAEAkL0C09hh0yOgU58AAAAAElFTkSuQmCC",
+				"closedicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAABv0lEQVR4Xu2aYW7CMBSDX26ChHabXZfbTJN2kqKCNpCg+Jk0axp9/MVpky+220JL8EkTKGklwgCWYQJgAcsgYEhxFrAMAoYUZwHLIGBIcRawDAKGFGcByyBgSHFWA1iTccys9BARP1lxD7qMs1qA+l175vw9cLrMITPZlrA+I+LUDQ0xka1hZTesC57AMrahB1i7cVdPsOa5tOxHw0PPpb3Aql5I5QEyHDa/GlaucdXhx4j4fnXEDNGuo7EiLnmTDKwb7Y+I+FrNWdM0rslKKdI4UnB/hQKWDv2fnYAFrOtD8n/EMHEOvR0bK+bENIc1Aqi7fZL9LQWvCh5Yj5FYLHhgAWuxQYnhDY1kIQV0lkETWMB61ksyZVKAs3AWzqp8apIpkwJiSAyJITGsJGAMl5UkBXQWnUVnGZEDFrAqCRjDZX9LwVLBD/Yr6eUPHgVWCnp/DUgt0PhespACYL1562Ds0h6l0jhSgLNwVvv7rD1my5izTJkUEENiSAyNyDWDNR943Pcjr9gydZQTVe7YMMNTRIdZbeVCgGUABBawDAKGFGcByyBgSHEWsAwChhRnAcsgYEhxFrAMAoYUZxmwzq8phkz4oCrBAAAAAElFTkSuQmCC"
+			},
+			"copyTooltipColor": false,
+			"color1": [
+				0,
+				0,
+				0
+			],
+			"color2": [
+				255,
+				255,
+				255
+			],
+			"color3": null,
+			"color4": null,
+			"servers": [
+				"577310618915176469",
+				"540270365125902347",
+				"516297152121667584",
+				"455490388854046735",
+				"584787534819885058"
+			],
+			"isOpen": false
+		},
+		"folder_2286631600250531": {
+			"folderID": "folder_2286631600250531",
+			"folderName": "Learning",
+			"position": 3,
+			"iconID": "1",
+			"icons": {
+				"openicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAAB40lEQVR4Xu3awVHDMBCF4aQHCkgNNEEnnCgnJzqhCWqgAHog4xnMGI1l75NXkiX9OW8s+ctbRfboeuFjFriaKym8gCWEACywBAGhlGSBJQgIpSQLLEFAKCVZYAkCQinJAksQEEqTknV7vf8IY/yVfr2/JY2XMlaO78iTT4WaJ98ymIR1FKp1sENYT88v5rR/f378q20xYclYCtSsFIKZpTMUpvxYRbGme24ZrDhWy2BVsDJ0lfmSR9bO4bDCZCtrF1jCRhmsM2Cd6V/PvKBFCudWzZKsnqCWTx1gGWM3pasIVspu33gP2crWthhgRbiLYIWD9JKqydQ9WWD9RnX5PiuWGLASsVpswa3HIdc27DlV7msWWIu/1r01CywjVu9Qrm0IVrC73WpDsIxYI0C5tSFYKw+YsTYEy4g1CpRLG4IVecez1oZgGbFGgjrchmBtvNUO2xCsRKze3l2tMSS/zwov1iKWekgErMWvvndIBKzSWCO04KGtw3LNAmvn2RCsnZMDa+fgR0mVSxuCZXg2zHZ8pcKF97YM85Tctg4V7tFlSCuUSxu6zLjiRbJhVbynUwwtteEpZlxxEmAJ+GCBJQgIpSQLLEFAKCVZYAkCQinJAksQEEpJFliCgFBKssASBITSB6lIeVsHTJvNAAAAAElFTkSuQmCC",
+				"closedicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAABkUlEQVR4Xu3bwQ2CQBRFUejBAqzBJuzEleW4shObsAYLsAfNLDBKTJw7OOP8eF0/4XN4EIzDOPjJFhizkwYHsUAJxBILCICozRILCICozRILCICozRILCICozRILCIBoUbPWu8MN7OMRvRz3Rfsr2VeN7+DhS6Gm4SODIaylUNHBFmGtNtvstl/Pp5dsxIYVYxGoSWkOli1dIVhysppipWOODNYcKzLYT7AqXFXZm1xy7/w7rHmzyb1LLPCgLFYLrOybROfBJpdh5wbZ44mVTTUMzbBKnuLBcVSJ+ugAWZ/BmjQrYqve/UYV60PTbBa4FMUSCwiAqM0SCwiAqM0SCwiAqM0SCwiAqM0SCwiAqM0SCwiAqM0SCwiAqM0SCwiAqM0SCwiAqM0SCwiAqM0SCwiAqM0SCwiAaPNmpdki/oX/k4Uh4ER2HW2y1qFrATBcNaw0w7fe3wHHUy1KoNIQaAFutamDbFgscKLEEgsIgKjNEgsIgKjNEgsIgKjNEgsIgKjNEgsIgKjNEgsIgKjNAlh3izIuW6AEb20AAAAASUVORK5CYII="
+			},
+			"copyTooltipColor": false,
+			"color1": [
+				32,
+				102,
+				148
+			],
+			"color2": [
+				52,
+				152,
+				219
+			],
+			"color3": null,
+			"color4": null,
+			"servers": [
+				"268882317391429632",
+				"238666723824238602",
+				"435927929499942923",
+				"290269241645596672",
+				"167811324590424065",
+				"516125324711297024",
+				"280806472928198656",
+				"298214543782576139",
+				"542482722824650762"
+			],
+			"isOpen": false
+		},
+		"folder_7094842159581864": {
+			"folderID": "folder_7094842159581864",
+			"folderName": "Chill",
+			"position": 33,
+			"iconID": "6",
+			"icons": {
+				"openicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAABr0lEQVR4Xu3aPW6DQBCGYbvJTdKm8qGidDlJOp+KKsdJE2sVoWAZ2H3Zle1lXtfD3+NvhgVxPPgrFjgWV1p4EAuEQCyxgAAoNVliAQFQarLEAgKg1GSJBQRAqckSCwiAUpMlFhAApThZb8PnL9j/Ten36Qsfs+Z4LbdFJ14LNZ54r2APwUpoPYI9DKtHsCqsl+Gj5Ui4y76G91d0zdOTQhtOZ1aPUOOFbwXbhNUzVAITCzSxWABra7pCtmHC+jmd8fIlNBZdvogFHr/EEis/7dPMataGrR6a86f9XBVrz6yzbRgVKvdW5AYrOtQamFgLU2CuHcUSq/6mYbKAoVhiAQFQWpSstL/oy4elhamL0pm0iVXZgmlzk1WbrMhzCz9IizXfs4sv/6LeEU1Wg+G+OODHfUdLV+5jldV38GJdR1KsiYfJajSvsjMr0hIilyqxQAuKJRYYUq2xIsytknlV1IZi/cev6MOQvS9OTRYYXU2x9tyKpVDFM0usv5gWzSyQ6F2XigX+XrHEAgKg1GSJBQRAqckSCwiAUpMlFhAApSZLLCAASk2WWEAAlJosgHUB9jrITIJ1GRkAAAAASUVORK5CYII=",
+				"closedicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAABcklEQVR4Xu3aMU7DQABFwaThOFQ5FR0noeNUqTgODSgFEhIUHjtrK6tH/YjXk+8oRc6n/hYLnBeXhaewYARhhQUCkLassEAA0pYVFghA2rLCAgFIW1ZYIABpywoLBCDlZT1fX7/g9f+kH5c3vuZ/1zviHHTwrQf8uemtYEed4xCsG9pasHtBrXnjDsNaA3ZvKD3DJqyn68uWjy/638/LO/VLY1n4aqwZoHZZ1ixQU2GNevR+P6LDH8M9lrUH1C7LWvrh+Qjd8GU9AsLSMw7BGvEdZ+kNjezCAt2wwgIBSFtWWCAAacsKCwQgbVlhgQCkLSssEIC0ZYUFApC2rLBAANKWFRYIQNqywgIBSFtWWCAAacsKCwQgbVlhgQCkLSssEIC0ZYUFApC2rLBAANIhy7pdf7bfaAnU7f7pp90zgSnUKixY+HQpL2s6AbihsMICAUhbVlggAGnLCgsEIG1ZYYEApC0rLBCAtGWFBQKQtizA+ga5jtNMWefvmAAAAABJRU5ErkJggg=="
+			},
+			"copyTooltipColor": false,
+			"color1": [
+				46,
+				204,
+				113
+			],
+			"color2": [
+				52,
+				152,
+				219
+			],
+			"color3": null,
+			"color4": null,
+			"servers": [
+				"536785167000403989",
+				"374678012651896843",
+				"587323829626470400"
+			],
+			"isOpen": false
+		}
+	}
+}
