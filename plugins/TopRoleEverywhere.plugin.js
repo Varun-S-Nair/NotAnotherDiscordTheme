@@ -1,21 +1,25 @@
-//META{"name":"TopRoleEverywhere"}*//
+//META{"name":"TopRoleEverywhere","website":"https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/TopRoleEverywhere","source":"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/TopRoleEverywhere/TopRoleEverywhere.plugin.js"}*//
 
 class TopRoleEverywhere {
 	getName () {return "TopRoleEverywhere";}
 
-	getVersion () {return "2.7.9";}
+	getVersion () {return "2.8.3";}
 
 	getAuthor () {return "DevilBro";}
 
 	getDescription () {return "Adds the highest role of a user as a tag.";}
-	
+
 	initConstructor () {
+		this.changelog = {
+			"fixed":[["Overflow","Long role names now properly overflow with overflow ellipsis"]]
+		};
+		
 		this.patchModules = {
-			"NameTag":"componentDidMount",
+			"ChannelMember":"componentDidMount",
 			"MessageUsername":"componentDidMount",
 			"StandardSidebarView":"componentWillUnmount"
 		};
-		
+
 		this.css = `
 			.TRE-tag {
 				border-radius: 3px;
@@ -25,22 +29,28 @@ class TopRoleEverywhere {
 				font-size: 10px;
 				font-weight: 500;
 				height: 15px;
-				line-height: 13px;
+				line-height: 12px;
 				margin-left: 6px;
-				overflow: hidden;
 				padding: 1px 2px;
-				text-overflow: ellipsis;
-				text-transform: uppercase;
+				position: relative;
 				text-indent: 0px !important;
 				vertical-align: top;
+				white-space: nowrap;
 			}
-			${BDFDB.dotCN.messagegroupcompact} .TRE-tag {
-				margin-left: 2px;
-				margin-right: 6px;
+			.TRE-tag .role-inner {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				text-transform: uppercase;
+			}
+			${BDFDB.dotCN.messagegroup} .TRE-tag {
+				bottom: 2px;
+			}
+			.BE-badges + .TRE-tag {
+				margin-left: 0;
 			}`;
-			
-		this.tagMarkup = `<span class="TRE-tag"><span class="role-inner"></span></span>`;
-			
+
+		this.tagMarkup = `<div class="TRE-tag"><div class="role-inner"></div></div>`;
+
 		this.defaults = {
 			settings: {
 				showInChat:			{value:true, 	description:"Show Tag in Chat Window."},
@@ -54,20 +64,20 @@ class TopRoleEverywhere {
 			}
 		};
 	}
-	
+
 	getSettingsPanel () {
-		if (!this.started || typeof BDFDB !== "object") return;
+		if (!global.BDFDB || typeof BDFDB != "object" || !BDFDB.loaded || !this.started) return;
 		let settings = BDFDB.getAllData(this, "settings"); 
-		let settingshtml = `<div class="${this.getName()}-settings DevilBro-settings"><div class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.size18 + BDFDB.disCNS.height24 + BDFDB.disCNS.weightnormal + BDFDB.disCN.marginbottom8}">${this.getName()}</div><div class="DevilBro-settings-inner">`;
+		let settingshtml = `<div class="${this.name}-settings BDFDB-settings"><div class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.size18 + BDFDB.disCNS.height24 + BDFDB.disCNS.weightnormal + BDFDB.disCN.marginbottom8}">${this.name}</div><div class="BDFDB-settings-inner">`;
 		for (let key in settings) {
 			settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom8}" style="flex: 1 1 auto;"><h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.size16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">${this.defaults.settings[key].description}</h3><div class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.switchenabled + BDFDB.disCNS.switch + BDFDB.disCNS.switchvalue + BDFDB.disCNS.switchsizedefault + BDFDB.disCNS.switchsize + BDFDB.disCN.switchthemedefault}" style="flex: 0 0 auto;"><input type="checkbox" value="settings ${key}" class="${BDFDB.disCNS.switchinnerenabled + BDFDB.disCN.switchinner} settings-switch"${settings[key] ? " checked" : ""}></div></div>`;
 		}
 		settingshtml += `</div></div>`;
-		
+
 		let settingspanel = BDFDB.htmlToElement(settingshtml);
 
 		BDFDB.initElements(settingspanel, this);
-			
+
 		return settingspanel;
 	}
 
@@ -75,35 +85,50 @@ class TopRoleEverywhere {
 	load () {}
 
 	start () {
-		var libraryScript = document.querySelector('head script[src="https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js"]');
-		if (!libraryScript || performance.now() - libraryScript.getAttribute("date") > 600000) {
+		if (!global.BDFDB) global.BDFDB = {myPlugins:{}};
+		if (global.BDFDB && global.BDFDB.myPlugins && typeof global.BDFDB.myPlugins == "object") global.BDFDB.myPlugins[this.getName()] = this;
+		var libraryScript = document.querySelector('head script#BDFDBLibraryScript');
+		if (!libraryScript || (performance.now() - libraryScript.getAttribute("date")) > 600000) {
 			if (libraryScript) libraryScript.remove();
 			libraryScript = document.createElement("script");
+			libraryScript.setAttribute("id", "BDFDBLibraryScript");
 			libraryScript.setAttribute("type", "text/javascript");
 			libraryScript.setAttribute("src", "https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js");
 			libraryScript.setAttribute("date", performance.now());
-			libraryScript.addEventListener("load", () => {
-				BDFDB.loaded = true;
-				this.initialize();
-			});
+			libraryScript.addEventListener("load", () => {this.initialize();});
 			document.head.appendChild(libraryScript);
+			this.libLoadTimeout = setTimeout(() => {
+				libraryScript.remove();
+				require("request")("https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js", (error, response, body) => {
+					if (body) {
+						libraryScript = document.createElement("script");
+						libraryScript.setAttribute("id", "BDFDBLibraryScript");
+						libraryScript.setAttribute("type", "text/javascript");
+						libraryScript.setAttribute("date", performance.now());
+						libraryScript.innerText = body;
+						document.head.appendChild(libraryScript);
+					}
+					this.initialize();
+				});
+			}, 15000);
 		}
 		else if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) this.initialize();
 		this.startTimeout = setTimeout(() => {this.initialize();}, 30000);
 	}
 
 	initialize () {
-		if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) {			
+		if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) {
+			if (this.started) return;
 			BDFDB.loadMessage(this);
-			
+
 			this.GuildPerms = BDFDB.WebModules.findByProperties("getHighestRole");
 			this.GuildStore = BDFDB.WebModules.findByProperties("getGuild");
 			this.UserGuildState = BDFDB.WebModules.findByProperties("getGuildId", "getLastSelectedGuildId");
-			
+
 			BDFDB.WebModules.forceAllUpdates(this);
 		}
 		else {
-			console.error(this.getName() + ": Fatal Error: Could not load BD functions!");
+			console.error(`%c[${this.getName()}]%c`, 'color: #3a71c1; font-weight: 700;', '', 'Fatal Error: Could not load BD functions!');
 		}
 	}
 
@@ -113,16 +138,16 @@ class TopRoleEverywhere {
 			BDFDB.unloadMessage(this);
 		}
 	}
-	
-	
+
+
 	// begin of own functions
-	
-	processNameTag (instance, wrapper) {
-		if (instance.props && BDFDB.containsClass(wrapper, BDFDB.disCN.membernametag) && BDFDB.getData("showInMemberList", this, "settings")) {
+
+	processChannelMember (instance, wrapper) {
+		if (instance.props && BDFDB.getData("showInMemberList", this, "settings")) {
 			this.addRoleTag(instance.props.user, wrapper.querySelector(BDFDB.dotCN.memberusername), "list");
 		}
 	}
-	
+
 	processMessageUsername (instance, wrapper) {
 		let message = BDFDB.getReactValue(instance, "props.message");
 		if (message) {
@@ -130,7 +155,7 @@ class TopRoleEverywhere {
 			if (username && BDFDB.getData("showInChat", this, "settings")) this.addRoleTag(message.author, username, "chat");
 		}
 	}
-	
+
 	processStandardSidebarView (instance, wrapper) {
 		if (this.SettingsUpdated) {
 			delete this.SettingsUpdated;
@@ -138,7 +163,7 @@ class TopRoleEverywhere {
 			BDFDB.WebModules.forceAllUpdates(this);
 		}
 	}
-	
+
 	addRoleTag (info, username, type) {
 		if (!info || !username) return;
 		BDFDB.removeEles(username.parentElement.querySelectorAll(".TRE-tag"));
@@ -186,7 +211,7 @@ class TopRoleEverywhere {
 			inner.style.setProperty("background-image", bgInner);
 			inner.style.setProperty("-webkit-background-clip", "text");
 			inner.textContent = roleText;
-			
+
 			if (oldwidth && oldwidth < 100 && BDFDB.getRects(username).width < 100) {
 				tag.style.setProperty("max-width", (BDFDB.getRects(BDFDB.getParentEle(BDFDB.dotCN.memberinner, username)).width - oldwidth - 15) + "px");
 			}

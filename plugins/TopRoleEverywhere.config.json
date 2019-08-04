@@ -8,5 +8,8 @@
 		"disableForBots": true,
 		"addUserID": true,
 		"darkIdTag": true
+	},
+	"changelog": {
+		"currentversion": "2.8.3"
 	}
 }

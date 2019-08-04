@@ -13,5 +13,8 @@
 	},
 	"changelog": {
 		"currentversion": "1.2.9"
+	},
+	"formats": {
+		"ownFormat": "$hour:$minute:$second, $day.$month.$year"
 	}
 }

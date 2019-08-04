@@ -1,5 +1,6 @@
 {
 	"settings": {
+		"changeInChatTextarea": true,
 		"changeInChatWindow": true,
 		"changeInMentions": true,
 		"changeInVoiceChat": true,
@@ -10,9 +11,19 @@
 		"changeInDmCalls": true,
 		"changeInTyping": true,
 		"changeInFriendList": true,
+		"changeInInviteList": true,
+		"changeInActivity": true,
 		"changeInUserPopout": true,
 		"changeInUserProfil": true,
-		"changeInUserAccount": true
+		"changeInAutoComplete": true,
+		"changeInAuditLog": true,
+		"changeInMemberLog": true,
+		"changeInSearchPopout": true,
+		"changeInUserAccount": true,
+		"changeInAppTitle": true
+	},
+	"changelog": {
+		"currentversion": "3.4.7"
 	},
 	"users": {
 		"164815072617693187": {

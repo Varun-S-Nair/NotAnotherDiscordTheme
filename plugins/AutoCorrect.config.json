@@ -467,6 +467,42 @@
             {
                 "word": "sumant",
                 "replacement": "Sumant"
+            },
+            {
+                "word": "probs",
+                "replacement": "probably"
+            },
+            {
+                "word": "tbh",
+                "replacement": "tbh"
+            },
+            {
+                "word": "img",
+                "replacement": "image"
+            },
+            {
+                "word": "imgs",
+                "replacement": "images"
+            },
+            {
+                "word": "ss",
+                "replacement": "screenshot"
+            },
+            {
+                "word": "ss's",
+                "replacement": "screenshots"
+            },
+            {
+                "word": "Sumant",
+                "replacement": "Sumant"
+            },
+            {
+                "word": "didnt",
+                "replacement": "didn't"
+            },
+            {
+                "word": "CS",
+                "replacement": "Computer Science"
             }
         ],
         "useDevilsChecker": false,
@@ -477,18 +513,17 @@
             "ttyl",
             "oof",
             "chromebook",
+            "logos",
+            "imgur",
             "ginders",
             "hella",
             "abt",
             "lmao",
-            "lmaooo",
             "fml",
             "devpost",
             "pasha",
-            "deepansha",
             "akshit",
             "ginder",
-            "brack",
             "ya",
             "ofc",
             "dw",

@@ -5,6 +5,6 @@
         "utc": false,
         "24h": true,
         "mention": false,
-        "citeFull": false
+        "citeFull": true
     }
 }
