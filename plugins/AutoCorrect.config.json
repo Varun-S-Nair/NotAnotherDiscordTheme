@@ -433,8 +433,8 @@
                 "replacement": "react native"
             },
             {
-                "replacement": "react-native",
-                "word": "R-n"
+                "word": "R-n",
+                "replacement": "react-native"
             },
             {
                 "word": "teh",
@@ -503,10 +503,177 @@
             {
                 "word": "CS",
                 "replacement": "Computer Science"
+            },
+            {
+                "word": "idr",
+                "replacement": "I don't remember"
+            },
+            {
+                "word": "ao",
+                "replacement": "Admission Officer"
+            },
+            {
+                "word": "econ",
+                "replacement": "Economics"
+            },
+            {
+                "word": "lmaoooo",
+                "replacement": "lmaoooo"
+            },
+            {
+                "word": "lmaooo",
+                "replacement": "lmaooo"
+            },
+            {
+                "word": "lmaoo",
+                "replacement": "lmaoo"
+            },
+            {
+                "word": "exp",
+                "replacement": "experience"
+            },
+            {
+                "word": "/ss?",
+                "replacement": "Can you please send a **screenshot**, so I can see?"
+            },
+            {
+                "word": "amnt",
+                "replacement": "amount"
+            },
+            {
+                "word": "imp",
+                "replacement": "important"
+            },
+            {
+                "word": "dims",
+                "replacement": "dimensions"
+            },
+            {
+                "word": "dim",
+                "replacement": "dimension"
+            },
+            {
+                "word": "th",
+                "replacement": "the"
+            },
+            {
+                "word": "ECs",
+                "replacement": "Extracurriculars"
+            },
+            {
+                "word": "inf",
+                "replacement": "∞"
+            },
+            {
+                "word": "realised",
+                "replacement": "realized"
+            },
+            {
+                "word": "cb",
+                "replacement": "CollegeBoard"
+            },
+            {
+                "word": "CB",
+                "replacement": "CollegeBoard"
+            },
+            {
+                "word": "mit",
+                "replacement": "MIT"
+            },
+            {
+                "word": "ishaan",
+                "replacement": "ishaan-the-snake"
+            },
+            {
+                "word": "desmos",
+                "replacement": "desmos"
+            },
+            {
+                "word": "faq",
+                "replacement": "FAQ"
+            },
+            {
+                "word": "pennapps",
+                "replacement": "PennApps"
+            },
+            {
+                "word": "FAQ",
+                "replacement": "FAQ"
+            },
+            {
+                "word": "faqs",
+                "replacement": "FAQs"
+            },
+            {
+                "word": "FAQS",
+                "replacement": "FAQs"
+            },
+            {
+                "word": "Econ",
+                "replacement": "Economics"
+            },
+            {
+                "word": "ss'd",
+                "replacement": "screenshotted"
+            },
+            {
+                "word": "APs",
+                "replacement": "APs"
+            },
+            {
+                "word": "aint",
+                "replacement": "ain't"
+            },
+            {
+                "word": "befor",
+                "replacement": "before"
+            },
+            {
+                "word": "notf",
+                "replacement": "notification"
+            },
+            {
+                "word": "notif",
+                "replacement": "notification"
+            },
+            {
+                "word": "jetbrains",
+                "replacement": "JetBrains"
+            },
+            {
+                "word": "sus",
+                "replacement": "suspicious"
+            },
+            {
+                "word": "passwd",
+                "replacement": "password"
+            },
+            {
+                "word": "desmos",
+                "replacement": "Desmos"
+            },
+            {
+                "word": "tysm",
+                "replacement": "thank you so much"
+            },
+            {
+                "word": "southahcks",
+                "replacement": "SouthHacks"
+            },
+            {
+                "word": "intl",
+                "replacement": "International"
+            },
+            {
+                "word": "ss?",
+                "replacement": "screenshot?"
             }
         ],
         "useDevilsChecker": false,
         "learnedWords": [
+            "sahit",
+            "sahit",
+            "everytime",
             "glooks",
             "ngl",
             "wtaf",

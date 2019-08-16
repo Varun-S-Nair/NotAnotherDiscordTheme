@@ -23,7 +23,7 @@
 		"changeInAppTitle": true
 	},
 	"changelog": {
-		"currentversion": "3.4.7"
+		"currentversion": "3.5.0"
 	},
 	"users": {
 		"164815072617693187": {
@@ -38,15 +38,15 @@
 			"url": null
 		},
 		"302795532844269569": {
+			"name": "kashyap murali",
+			"tag": null,
+			"url": "https://cdn.discordapp.com/emojis/552654539283496971.png?v=1",
+			"removeIcon": false,
+			"ignoreTagColor": false,
 			"color1": null,
 			"color2": null,
 			"color3": null,
-			"color4": null,
-			"ignoreTagColor": false,
-			"name": "kashyap murali",
-			"removeIcon": false,
-			"tag": null,
-			"url": null
+			"color4": null
 		},
 		"308796499607945217": {
 			"color1": null,
@@ -195,6 +195,28 @@
 			"name": "UbuntuChromer",
 			"tag": null,
 			"url": null,
+			"removeIcon": false,
+			"ignoreTagColor": false,
+			"color1": null,
+			"color2": null,
+			"color3": null,
+			"color4": null
+		},
+		"291332069244796928": {
+			"name": null,
+			"tag": null,
+			"url": "https://www.southhacks.com/static/img/Pasta.png",
+			"removeIcon": false,
+			"ignoreTagColor": false,
+			"color1": null,
+			"color2": null,
+			"color3": null,
+			"color4": null
+		},
+		"441010873285476353": {
+			"name": "THE_SNAKE",
+			"tag": null,
+			"url": "https://discordapp.com/assets/b2b6a3c4ecc6af020a67a160ea8a8bb8.svg",
 			"removeIcon": false,
 			"ignoreTagColor": false,
 			"color1": null,

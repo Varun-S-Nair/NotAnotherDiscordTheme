@@ -13,5 +13,8 @@
 	},
 	"choices": {
 		"lastMessageDateLang": "$discord"
+	},
+	"formats": {
+		"ownFormat": "$hour:$minute:$second, $day.$month.$year"
 	}
 }
