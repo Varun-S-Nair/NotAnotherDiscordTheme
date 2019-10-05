@@ -23,7 +23,7 @@ However, it is now basically just my BetterDiscord config - (I may have themes/p
 #### Q: *How would I go about customizing the theme?*
   - The details on how to customize the theme are [here.](https://www.youtube.com/watch?v=YYsdNkLOQjU)
 
-## Contributing
+### Contributing
 Have you made something cool with NotAnotherDiscordTheme and feel like sharing it? Fork me! If you're not git savvy you can either open an issue or just PM it to me on discord and I'll add your theme!
 
 ## Notes
